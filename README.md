@@ -78,6 +78,19 @@ TODO: add setup instructions once the stack is decided.
 | Ali | Mobile |
 | Mariam | AI |
 
+### Track Leads
+
+Each track lead merges their track's develop branch into `main` at the end of each sprint.
+
+| Track | Track Lead |
+|-------|------------|
+| Backend | Hussein |
+| Frontend | Youstina |
+| Mobile | Mohamed Abdullah |
+| AI | Mariam |
+
+Hussein is the team leader and approves every PR into `main`.
+
 ## Branching
 
-Work happens on task branches created from the develop branch of your area (`front-develop`, `back-develop`, `mobile-develop`, `ai-develop`). The team leader merges the develop branches into `main` at the end of each sprint. See [CONTRIBUTING.md](CONTRIBUTING.md) for details and read it before you start working.
+Work happens on task branches created from the develop branch of your area (`front-develop`, `back-develop`, `mobile-develop`, `ai-develop`). At the end of each sprint, each track lead merges their develop branch into `main`, with the team leader's approval. See [CONTRIBUTING.md](CONTRIBUTING.md) for details and read it before you start working.
