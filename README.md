@@ -78,18 +78,6 @@ TODO: add setup instructions once the stack is decided.
 | Ali | Mobile |
 | Mariam | AI |
 
-### Track Leads
-
-Each track lead merges their track's develop branch into `main` at the end of each sprint.
-
-| Track | Track Lead |
-|-------|------------|
-| Backend | Hussein |
-| Frontend | Youstina |
-| Mobile | Mohamed Abdullah |
-| AI | Mariam |
-
-Hussein is the team leader and approves every PR into `main`.
 
 ## Branching
 
