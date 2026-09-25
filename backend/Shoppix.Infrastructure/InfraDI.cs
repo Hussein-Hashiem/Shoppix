@@ -8,6 +8,9 @@ public static class InfraDI
             => options.UseSqlServer(configuration.GetConnectionString("defaultConnection")));
 
         services.AddScoped<IAppDbContext, AppDbContext>();
+        services.AddScoped<IFileService, CloudinaryFileService>();
+
+        services.Configure<CloudinarySettings>(configuration.GetSection(CloudinarySettings.Name));
 
         return services;
     }

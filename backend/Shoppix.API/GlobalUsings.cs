@@ -6,4 +6,10 @@ global using Microsoft.AspNetCore.Mvc;
 global using Shoppix.Domain.Common.Results;
 global using MediatR;
 global using Shoppix.API.Extensions;
+global using Shoppix.Application.Features.Products.Command.CreateProduct;
+global using Shoppix.Application.Features.Products.Command.UpdateProduct;
+global using Shoppix.Application.Features.Products.Command.DeleteProudct;
+global using Shoppix.Application.Features.Products.Queries.GetProductById;
+global using Shoppix.Application.Features.Products.Queries.GetProducts;
+global using Shoppix.API.Requests.Product;
 
