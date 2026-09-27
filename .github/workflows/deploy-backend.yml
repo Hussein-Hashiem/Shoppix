@@ -1,0 +1,44 @@
+name: Deploy Backend to MonsterASP
+
+on:
+  push:
+    branches: [ back-develop ]
+    paths:
+      - 'backend/**'
+
+jobs:
+  deploy:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 10 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Write production config (not committed to the repo)
+        working-directory: backend/Shoppix.API
+        shell: pwsh
+        run: |
+          $config = @{
+            ConnectionStrings = @{ Default = "${{ secrets.DB_CONNECTION_STRING }}" }
+            Jwt               = @{ Key = "${{ secrets.JWT_KEY }}" }
+          } | ConvertTo-Json -Depth 5
+          Set-Content -Path "appsettings.Production.json" -Value $config
+
+      - name: Install Web Deploy
+        run: choco install webdeploy -y --no-progress
+
+      - name: Publish via Web Deploy
+        working-directory: backend/Shoppix.API
+        run: >
+          dotnet publish Shoppix.API.csproj -c Release
+          --runtime win-x86 --no-self-contained
+          -p:WebPublishMethod=MSDeploy
+          -p:MSDeployServiceUrl=${{ secrets.SERVER_COMPUTER_NAME }}
+          -p:DeployIisAppPath=${{ secrets.WEBSITE_NAME }}
+          -p:Username=${{ secrets.SERVER_USERNAME }}
+          -p:Password=${{ secrets.SERVER_PASSWORD }}
+          -p:AllowUntrustedCertificate=true
+          -p:EnableMsDeployAppOffline=true
