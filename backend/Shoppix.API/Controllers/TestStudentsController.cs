@@ -28,7 +28,7 @@ namespace Shoppix.API.Controllers
         [HttpGet("test")]
         public async Task<IActionResult> Test( CancellationToken cancellationToken)
         {
-            return Ok("Test successfullllll  !!!!!!");
+            return Ok("Test auto deploy !!!!!!");
         }
     }
 }
