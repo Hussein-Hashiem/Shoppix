@@ -17,7 +17,7 @@ namespace Shoppix.API.Controllers
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetStudnet([FromRoute] int id, CancellationToken cancellationToken)
         {
             var result = await mediator.Send(new GetStudentQuery(id), cancellationToken);
