@@ -24,5 +24,11 @@ namespace Shoppix.API.Controllers
 
             return result.IsSuccess ? Ok(result.Value) : result.ToProblem();
         }
+
+        [HttpGet("test")]
+        public async Task<IActionResult> Test( CancellationToken cancellationToken)
+        {
+            return Ok("Test successful!");
+        }
     }
 }
