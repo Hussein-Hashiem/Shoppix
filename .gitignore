@@ -31,7 +31,10 @@ obj/
 *.dll
 *.pdb
 appsettings.Local.json
+appsettings.Development.json
+Migrations
 *.pfx
+
 
 # ---- Mobile (Flutter / Dart) ----
 .dart_tool/

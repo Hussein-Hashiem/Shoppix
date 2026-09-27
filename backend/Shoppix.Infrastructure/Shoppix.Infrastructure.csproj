@@ -21,4 +21,8 @@
     <ProjectReference Include="..\Shoppix.Domain\Shoppix.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
