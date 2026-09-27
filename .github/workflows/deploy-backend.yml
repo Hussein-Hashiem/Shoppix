@@ -36,6 +36,7 @@ jobs:
           dotnet publish Shoppix.API.csproj -c Release
           --runtime win-x86 --no-self-contained
           -p:WebPublishMethod=MSDeploy
+          -p:MSDeployPublishMethod=WMSVC
           -p:MSDeployServiceUrl=${{ secrets.SERVER_COMPUTER_NAME }}
           -p:DeployIisAppPath=${{ secrets.WEBSITE_NAME }}
           -p:Username=${{ secrets.SERVER_USERNAME }}
