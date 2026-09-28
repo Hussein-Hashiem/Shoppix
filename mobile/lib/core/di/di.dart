@@ -5,7 +5,7 @@ import '../utils/constants/endpoints.dart';
 
 final sl = GetIt.instance;
 
-void setupDio() {
+void setup() {
   final dio = Dio(
     BaseOptions(
       baseUrl: ApiEndpoints.baseUrl,
