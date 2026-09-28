@@ -26,9 +26,45 @@ Shoppix/
 
 ## Database
 
-The database runs on SQL Server. The ERD is available at [`docs/erd.png`](docs/erd.png).
+The database runs on SQL Server.
 
-![ERD](docs/erd.png)
+
+```mermaid
+erDiagram
+    USER ||--o{ ORDER : places
+    ORDER ||--|{ ORDER_ITEM : contains
+    PRODUCT ||--o{ ORDER_ITEM : "ordered in"
+
+    USER {
+        int Id
+        string Name
+        string Email
+        string PasswordHash
+    }
+    PRODUCT {
+        int Id
+        string Name
+        string Description
+        decimal Price
+        int Stock
+    }
+    ORDER {
+        int Id
+        int UserId
+        datetime OrderDate
+        decimal TotalPrice
+        string Status
+    }
+    ORDER_ITEM {
+        int Id
+        int OrderId
+        int ProductId
+        int Quantity
+        decimal UnitPrice
+    }
+```
+
+`Order.Status`: `"Pending"` → `"Confirmed"` (set immediately on checkout — there's no payment step to wait for).
 
 ## Getting Started
 
