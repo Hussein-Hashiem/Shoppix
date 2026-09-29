@@ -2,7 +2,8 @@
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController(IMediator mediator) : ControllerBase
+    [Authorize]
+    public class ProductsController(IMediator mediator) : ControllerBase
     {
 
         [HttpGet]

@@ -1,9 +1,8 @@
-﻿namespace Shoppix.Application.Common.Abstraction
-{
-    public interface IFileService
-    {
-        Task<CloudFile> UploadImageAsync(IFormFile file, CancellationToken cancellationToken = default);
+﻿namespace Shoppix.Application.Common.Abstraction;
 
-        Task<bool> DeleteImageAsync(string publicId, CancellationToken cancellationToken = default);
-    }
+public interface IFileService
+{
+    Task<CloudFile> UploadImageAsync(IFormFile file, CancellationToken cancellationToken = default);
+
+    Task<bool> DeleteImageAsync(string publicId, CancellationToken cancellationToken = default);
 }
