@@ -1,12 +1,11 @@
-﻿namespace Shoppix.Application.Features.Products.Queries.GetProductById
+﻿namespace Shoppix.Application.Features.Products.Queries.GetProductById;
+
+public class GetProductByIdQueryValidator : AbstractValidator<GetProductByIdQuery>
 {
-    public class GetProductByIdQueryValidator : AbstractValidator<GetProductByIdQuery>
+    public GetProductByIdQueryValidator()
     {
-        public GetProductByIdQueryValidator()
-        {
-            RuleFor(x => x.Id)
-                .NotEmpty()
-                .GreaterThan(0);
-        }
+        RuleFor(x => x.Id)
+            .NotEmpty()
+            .GreaterThan(0);
     }
 }

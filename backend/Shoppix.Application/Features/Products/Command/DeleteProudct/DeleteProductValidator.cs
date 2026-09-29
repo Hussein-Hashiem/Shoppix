@@ -1,12 +1,11 @@
-﻿namespace Shoppix.Application.Features.Products.Command.DeleteProudct
+﻿namespace Shoppix.Application.Features.Products.Command.DeleteProudct;
+
+public class DeleteProductValidator : AbstractValidator<DeleteProductCommand>
 {
-    public class DeleteProductValidator : AbstractValidator<DeleteProductCommand>
+    public DeleteProductValidator()
     {
-        public DeleteProductValidator()
-        {
-            RuleFor(x => x.Id)
-                .NotEmpty()
-                .GreaterThan(0);
-        }
+        RuleFor(x => x.Id)
+            .NotEmpty()
+            .GreaterThan(0);
     }
 }

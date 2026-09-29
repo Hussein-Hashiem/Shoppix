@@ -13,4 +13,15 @@ global using System.ComponentModel.DataAnnotations;
 global using Microsoft.AspNetCore.Http;
 global using Shoppix.Application.Common.Models;
 global using Shoppix.Infrastructure.Services;
+global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+global using Microsoft.IdentityModel.Tokens;
+global using Shoppix.Application.Identity;
+global using System.IdentityModel.Tokens.Jwt;
+global using System.Security.Claims;
+global using System.Text.Json;
+global using System.Text;
+global using Shoppix.Domain.Identity;
+
+
+
 

@@ -10,5 +10,9 @@ global using Shoppix.Application.Common.Errors;
 global using Shoppix.Application.Features.Products.Dtos;
 global using Microsoft.AspNetCore.Http;
 global using Shoppix.Application.Common.Models;
-
+global using Microsoft.AspNetCore.Identity;
+global using Shoppix.Application.Identity;
+global using System.Security.Cryptography;
+global using Shoppix.Domain.Identity;
+global using Shoppix.Application.Features.Auth.Dtos;
 
