@@ -12,4 +12,4 @@ global using Shoppix.Application.Features.Products.Command.DeleteProudct;
 global using Shoppix.Application.Features.Products.Queries.GetProductById;
 global using Shoppix.Application.Features.Products.Queries.GetProducts;
 global using Shoppix.API.Requests.Product;
-
+global using Shoppix.Infrastructure.Data;
