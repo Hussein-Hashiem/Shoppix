@@ -22,7 +22,7 @@ jobs:
         shell: pwsh
         run: |
           $config = @{
-            ConnectionStrings = @{ Default = "${{ secrets.DB_CONNECTION_STRING }}" }
+            ConnectionStrings = @{ defaultConnection = "${{ secrets.DB_CONNECTION_STRING }}" }
             Jwt               = @{ Key = "${{ secrets.JWT_KEY }}" }
           } | ConvertTo-Json -Depth 5
           Set-Content -Path "appsettings.Production.json" -Value $config
