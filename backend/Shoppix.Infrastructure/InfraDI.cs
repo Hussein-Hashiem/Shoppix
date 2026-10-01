@@ -1,4 +1,7 @@
-﻿namespace Shoppix.Infrastructure;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+
+namespace Shoppix.Infrastructure;
 
 public static class InfraDI
 {
@@ -48,7 +51,7 @@ public static class InfraDI
         services.Configure<IdentityOptions>(options =>
         {
             options.Password.RequiredLength = 8;
-
+            options.SignIn.RequireConfirmedEmail = false;
             options.User.RequireUniqueEmail = true;
         });
 

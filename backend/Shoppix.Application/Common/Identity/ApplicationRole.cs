@@ -1,5 +1,4 @@
-﻿namespace Shoppix.Application.Common.Identity;
-
+namespace Shoppix.Application.Common.Identity;
 public class ApplicationRole : IdentityRole<Guid>
 {
 }

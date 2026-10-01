@@ -1,7 +1,8 @@
-﻿using Shoppix.Application.Features.Products.Command.CreateProduct;
+namespace Shoppix.Application.Features.Products.Command.CreateProduct;
 
 public class CreateProductValidator : AbstractValidator<CreateProductCommand>
 {
+
     private static readonly string[] AllowedContentTypes =
     [
         "image/jpeg",
@@ -10,9 +11,9 @@ public class CreateProductValidator : AbstractValidator<CreateProductCommand>
     ];
 
     private const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
-
     public CreateProductValidator()
     {
+
         RuleFor(x => x.Name)
             .NotEmpty()
             .MaximumLength(50);
@@ -28,6 +29,7 @@ public class CreateProductValidator : AbstractValidator<CreateProductCommand>
             .GreaterThanOrEqualTo(0);
 
         RuleFor(x => x.Image)
+
             .NotNull()
             .WithMessage("Product image is required.")
             .Must(IsValidImage)
