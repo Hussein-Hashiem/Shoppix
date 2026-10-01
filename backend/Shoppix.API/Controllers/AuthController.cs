@@ -28,14 +28,6 @@ public class AuthController(IMediator mediator) : ControllerBase
         return result.IsSuccess ? Ok(result.Value) : result.ToProblem();
     }
 
-    [HttpPut("revoke-refresh-token")]
-    public async Task<IActionResult> RevokeRefresh([FromBody] GetRefreshTokenRequest request, CancellationToken cancellationToken)
-    {
-        var result = await mediator.Send(request.ToCommand(), cancellationToken);
-
-        return result.IsSuccess ? Ok() : result.ToProblem();
-    }
-
     [Authorize]
     [HttpPost("logout")]
     public async Task<IActionResult> Logout([FromBody] LogoutRequest request)

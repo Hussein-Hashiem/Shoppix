@@ -51,7 +51,7 @@ public static class InfraDI
         services.Configure<IdentityOptions>(options =>
         {
             options.Password.RequiredLength = 8;
-            options.SignIn.RequireConfirmedEmail = true;
+            options.SignIn.RequireConfirmedEmail = false;
             options.User.RequireUniqueEmail = true;
         });
 
