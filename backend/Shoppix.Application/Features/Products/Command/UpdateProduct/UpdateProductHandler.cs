@@ -4,7 +4,7 @@ internal class UpdateProductHandler(IAppDbContext _db) : IRequestHandler<UpdateP
 {
     public async Task<Result> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        var product = await _db.Products.FirstAsync(p => p.Id == request.Id, cancellationToken);
+        var product = await _db.Products.FindAsync(request.Id, cancellationToken);
         if(product is null)
         {
             return Result.Failure(ProductErrors.NotFound);

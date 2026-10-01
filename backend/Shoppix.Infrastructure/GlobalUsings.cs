@@ -18,10 +18,8 @@ global using Microsoft.IdentityModel.Tokens;
 global using Shoppix.Application.Identity;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Security.Claims;
-global using System.Text.Json;
 global using System.Text;
 global using Shoppix.Domain.Identity;
-
-
-
-
+global using Shoppix.Application.Common.Identity;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.AspNetCore.Identity;

@@ -68,7 +68,7 @@ public class JwtService : IJwtService
                     ValidateAudience = true,
                     ValidAudience = _jwtOptions.Audience,
 
-                    ValidateLifetime = true,
+                    ValidateLifetime = false,
 
                     ClockSkew = TimeSpan.Zero
                 },
