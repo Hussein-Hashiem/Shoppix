@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile/core/errors/failures.dart';
 import 'package:mobile/core/network/api_client.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mobile/core/errors/failures.dart';
 
 class MockDio extends Mock implements Dio {}
 
@@ -135,8 +135,6 @@ void main() {
     );
 
     test('badResponse with null data -> ServerFailure(Server error)', () async {
-      stubGetThrows(dioError(DioExceptionType.badResponse, status: 500));
-      // response موجود بس data = null
       stubGetThrows(
         DioException(
           requestOptions: requestOptions,
@@ -169,6 +167,28 @@ void main() {
         const Left<Failure, Response>(ServerFailure('Server error')),
       );
     });
+
+    test(
+      'badResponse with non-String message -> ServerFailure(Server error)',
+      () async {
+        stubGetThrows(
+          dioError(
+            DioExceptionType.badResponse,
+            status: 400,
+            data: {
+              'message': ['email must be valid'],
+            },
+          ),
+        );
+
+        final result = await client.get('/x');
+
+        expect(
+          result,
+          const Left<Failure, Response>(ServerFailure('Server error')),
+        );
+      },
+    );
 
     test(
       'connectionError (no response) -> NetworkFailure(No internet connection)',

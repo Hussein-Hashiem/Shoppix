@@ -7,11 +7,14 @@ mixin ApiClientBase {
 
   Failure _handleDioError(DioException e) {
     if (e.type == DioExceptionType.connectionTimeout ||
+        e.type == DioExceptionType.sendTimeout ||
         e.type == DioExceptionType.receiveTimeout) {
       return const NetworkFailure('Connection timeout');
     }
     if (e.response != null) {
-      return ServerFailure(e.response?.data['message'] ?? 'Server error');
+      final data = e.response!.data;
+      final message = data is Map<String, dynamic> ? data['message'] : null;
+      return ServerFailure(message is String ? message : 'Server error');
     }
     return const NetworkFailure('No internet connection');
   }
