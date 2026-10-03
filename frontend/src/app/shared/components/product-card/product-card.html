@@ -1,9 +1,8 @@
-<div
-  class="bg-white shadow-sm m-2 hover:shadow-md cursor-pointer p-4 rounded-2xl flex flex-col justify-between border-b-0  hover:border-b-4 hover:border-green-800 transition-all duration-100 ease-in-out group"
-  [routerLink]="['/product-details', product().id]">
-  
+<a class="bg-white w-full shadow-sm m-2 hover:shadow-md cursor-pointer p-4 rounded-2xl flex flex-col justify-between border-b-0 hover:border-b-4 hover:border-green-800 transition-all duration-100 ease-in-out group block"
+  [routerLink]="['/product-details', product().id]" [attr.aria-labelledby]="'product-title-' + product().id">
+
   <div class="relative rounded-xl overflow-hidden w-full h-48 bg-gray-50 mb-3">
-    <img [alt]="product().name" [src]="product().image"
+    <img [alt]="product().name" [src]="product().imageUrl"
       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
 
     <span
@@ -13,7 +12,8 @@
   </div>
 
   <div class="mb-4">
-    <h2 class="text-gray-900 font-bold text-base line-clamp-1 mb-1">{{product().name}}</h2>
+    <h2 class="text-gray-900 font-bold text-base line-clamp-1 mb-1" [id]="'product-title-'+product().id">
+      {{product().name}}</h2>
     <p class="text-gray-500 text-xs line-clamp-2 leading-relaxed">{{product().description}}</p>
   </div>
 
@@ -23,9 +23,16 @@
       <span class="text-gray-900 font-bold text-lg">{{ product().price | currency:'USD':'symbol':'1.2-2' }}</span>
     </div>
 
-    <button (click)="onAddToCart()" class="bg-emerald-800  hover:bg-emerald-900 text-white p-2.5 rounded-xl transition-colors shadow-md">
-          <svg lucideShoppingCartPlus></svg>
+    <button (click)="onAddToCart(); $event.stopPropagation(); $event.preventDefault()" [disabled]="isOutOfStock()"
+      [class.opacity-50]="isOutOfStock()" [aria-label]="isOutOfStock() ? 'Reached Stock Limit': 'Add to cart'"
+      class="flex items-center justify-center gap-2 bg-emerald-800 hover:bg-emerald-900 text-white p-2.5 cursor-pointer rounded-xl transition-colors shadow-md">
+      @if (isOutOfStock()) {
+      <span>Reached Stock Limit</span>
+      } @else {
+      <svg lucideShoppingCartPlus></svg>
+      <span>Add to Cart</span>
+      }
     </button>
   </div>
 
-</div>
+</a>

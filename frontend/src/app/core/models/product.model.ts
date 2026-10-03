@@ -4,5 +4,5 @@ export interface ProductModel {
   price : number;
   stockQuantity : number;
   description : string;
-  image : string;
+  imageUrl : string;
 }

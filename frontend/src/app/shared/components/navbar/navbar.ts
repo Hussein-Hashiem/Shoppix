@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { LucideLogOut, LucideMenu, LucideReceiptText, LucideShoppingBag } from '@lucide/angular';
+import { CartService } from '../../../core/services/cart.service';
 
 @Component({
   imports: [RouterLink, RouterLinkActive, LucideMenu, LucideShoppingBag, LucideReceiptText, LucideLogOut],
@@ -8,4 +9,7 @@ import { LucideLogOut, LucideMenu, LucideReceiptText, LucideShoppingBag } from '
   styleUrl: './navbar.css',
   templateUrl: './navbar.html',
 })
-export class Navbar { }
+export class Navbar { 
+  // Injections
+  cartService = inject(CartService);
+}
