@@ -1,64 +1,45 @@
-import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:mobile/core/errors/failures.dart';
-
+import 'package:mobile/core/errors/dio_exception_handler.dart';
 mixin ApiClientBase {
   Dio get dio;
-
-  Failure _handleDioError(DioException e) {
-    if (e.type == DioExceptionType.connectionTimeout ||
-        e.type == DioExceptionType.sendTimeout ||
-        e.type == DioExceptionType.receiveTimeout) {
-      return const NetworkFailure('Connection timeout');
-    }
-    if (e.response != null) {
-      final data = e.response!.data;
-      final message = data is Map<String, dynamic> ? data['message'] : null;
-      return ServerFailure(message is String ? message : 'Server error');
-    }
-    return const NetworkFailure('No internet connection');
-  }
 }
 
 mixin GetApiClient on ApiClientBase {
-  Future<Either<Failure, Response>> get(
-    String path, {
-    Map<String, dynamic>? queryParams,
-  }) async {
+  Future<Response> get(String path, {Map<String, dynamic>? queryParams}) async {
     try {
-      return Right(await dio.get(path, queryParameters: queryParams));
+      return await dio.get(path, queryParameters: queryParams);
     } on DioException catch (e) {
-      return Left(_handleDioError(e));
+      throw e.extractServerException();
     }
   }
 }
 
 mixin PostApiClient on ApiClientBase {
-  Future<Either<Failure, Response>> post(String path, {dynamic data}) async {
+  Future<Response> post(String path, {dynamic data}) async {
     try {
-      return Right(await dio.post(path, data: data));
+      return await dio.post(path, data: data);
     } on DioException catch (e) {
-      return Left(_handleDioError(e));
+      throw e.extractServerException();
     }
   }
 }
 
 mixin PutApiClient on ApiClientBase {
-  Future<Either<Failure, Response>> put(String path, {dynamic data}) async {
+  Future<Response> put(String path, {dynamic data}) async {
     try {
-      return Right(await dio.put(path, data: data));
+      return await dio.put(path, data: data);
     } on DioException catch (e) {
-      return Left(_handleDioError(e));
+      throw e.extractServerException();
     }
   }
 }
 
 mixin DeleteApiClient on ApiClientBase {
-  Future<Either<Failure, Response>> delete(String path) async {
+  Future<Response> delete(String path) async {
     try {
-      return Right(await dio.delete(path));
+      return await dio.delete(path);
     } on DioException catch (e) {
-      return Left(_handleDioError(e));
+      throw e.extractServerException();
     }
   }
 }
