@@ -13,14 +13,23 @@
       <ul
         class="font-medium flex flex-col md:items-center p-4 md:p-0 mt-4 border rounded-base bg-neutral-secondary-soft md:flex-row md:space-x-3 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-neutral-primary max-md:space-y-3">
         <li>
-          <a routerLink="/cart" routerLinkActive="bg-emerald-800 text-white"
-            class="flex items-center md:justify-center gap-2 text-sm font-medium p-2 text-heading border border-gray-900 shadow-[0_2px_0_0] shadow-black hover:-translate-y-0.5 max-md:hover:bg-gray-50 rounded transition-all duration-300">
+          <a routerLink="/cart" routerLinkActive="bg-green-800 text-white"
+            class="relative flex items-center md:justify-center gap-2 text-sm font-medium p-2 text-heading border border-gray-900 shadow-[0_2px_0_0] shadow-black hover:-translate-y-0.5 max-md:hover:bg-gray-50 rounded transition-all duration-300">
+
             <svg lucideShoppingBag></svg>
+
             <span class="md:hidden">Cart</span>
+
+            @if (cartService.totalCartCount() > 0) {
+            <span
+              class="absolute -top-2 -right-2 bg-red-600 text-white text-2xs font-bold px-1.5 py-0.5 rounded-full shadow-md">
+              {{ cartService.totalCartCount() }}
+            </span>
+            }
           </a>
         </li>
         <li>
-          <a routerLink="order-history" routerLinkActive="bg-emerald-800 text-white"
+          <a routerLink="order-history" routerLinkActive="bg-green-800 text-white"
             class="flex items-center md:justify-center gap-2 text-sm font-medium p-2 text-heading border border-gray-900 shadow-[0_2px_0_0] shadow-black hover:-translate-y-0.5 max-md:hover:bg-gray-50 rounded transition-all duration-300">
             <svg lucideReceiptText></svg>
             <span class="md:hidden">Orders</span>
@@ -32,7 +41,7 @@
             <li>
               <!-- call logout logic ||| show if JWT exist -->
               <button
-                class="w-full flex md:items-center justify-center gap-2 text-sm font-medium py-2 px-3 text-white bg-emerald-800 border border-gray-900 shadow-[0_2px_0_0] shadow-black rounded hover:-translate-y-0.5 transition-all duration-300 cursor-pointer">
+                class="w-full flex md:items-center justify-center gap-2 text-sm font-medium py-2 px-3 text-white bg-green-800 border border-gray-900 shadow-[0_2px_0_0] shadow-black rounded hover:-translate-y-0.5 transition-all duration-300 cursor-pointer">
                 <svg lucideLogOut></svg>
                 Logout
               </button>
@@ -40,14 +49,14 @@
             <li>
               <!-- call sign-in logic ||| show if JWT doesn't exist -->
               <button
-                class="w-full flex md:items-center justify-center gap-2 text-sm font-medium py-2 px-3 text-white bg-emerald-800 border border-gray-900 shadow-[0_2px_0_0] shadow-black rounded hover:-translate-y-0.5 transition-all duration-300 cursor-pointer">
+                class="w-full flex md:items-center justify-center gap-2 text-sm font-medium py-2 px-3 text-white bg-green-800 border border-gray-900 shadow-[0_2px_0_0] shadow-black rounded hover:-translate-y-0.5 transition-all duration-300 cursor-pointer">
                 Sign in
               </button>
             </li>
             <li>
               <!-- call register logic -->
               <button
-                class="w-full flex md:items-center justify-center gap-2 text-sm font-medium py-2 px-3 text-white bg-emerald-800 border border-gray-900 shadow-[0_2px_0_0] shadow-black rounded hover:-translate-y-0.5 transition-all duration-300 cursor-pointer">
+                class="w-full flex md:items-center justify-center gap-2 text-sm font-medium py-2 px-3 text-white bg-green-800 border border-gray-900 shadow-[0_2px_0_0] shadow-black rounded hover:-translate-y-0.5 transition-all duration-300 cursor-pointer">
                 Register
               </button>
             </li>
