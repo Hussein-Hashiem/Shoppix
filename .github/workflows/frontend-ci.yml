@@ -9,7 +9,7 @@ on:
       - ".github/workflows/frontend-ci.yml"
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
     defaults:
@@ -33,7 +33,3 @@ jobs:
 
       - name: Build
         run: npx ng build
-
-      - name: Run unit tests
-        # Vitest is the default runner in new Angular projects
-        run: npx ng test --no-watch

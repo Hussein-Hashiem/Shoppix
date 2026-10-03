@@ -1,8 +1,140 @@
-<div class="container mx-auto px-4 py-8">
-  <h1 class="text-2xl font-bold mb-6 text-gray-800">Our Products</h1>
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-    @for (product of products; track product.id) {
-      <app-product-card [product]="product"></app-product-card>
+<section
+  class="bg-[url('/screen.png')] relative bg-cover bg-center bg-no-repeat min-h-120 flex items-center justify-center overflow-hidden">
+  <div class="absolute inset-0 bg-linear-to-t from-black/70 via-black/50 to-black/30 z-0"></div>
+
+  <div
+    class="flex flex-col gap-5 justify-center items-center text-center h-full w-full py-20 px-6 z-10 relative max-w-5xl mx-auto">
+    <h1
+      class="text-white font-extrabold text-3xl sm:text-4xl md:text-5xl tracking-tight leading-tight max-w-3xl drop-shadow-sm">
+      Curated Design for Thoughtful Living.
+    </h1>
+
+    <p class="text-gray-200 text-sm sm:text-base leading-relaxed max-w-xl font-normal drop-shadow-sm">
+      Discover handcrafted workspace essentials, artisan kitchenware, and acoustic audio objects
+      crafted for daily longevity.
+    </p>
+
+    <button
+      class="group inline-flex items-center gap-2.5 bg-green-800 hover:bg-white text-white hover:text-emerald-900 px-7 py-3.5 mt-4 font-semibold text-sm rounded-xl border border-emerald-600 hover:border-white transition-all duration-300 ease-out shadow-lg hover:shadow-xl cursor-pointer">
+      <span>Shop All Products</span>
+      <svg lucideMoveRight class="w-4 h-4 transition-transform duration-300 ease-out group-hover:translate-x-1.5"></svg>
+    </button>
+  </div>
+</section>
+
+<section class="py-16 px-6 sm:px-8 lg:px-12 bg-white">
+  <div class="mb-10">
+    <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">All Products</h2>
+    <p class="mt-2 max-w-2xl text-gray-600 text-sm sm:text-base leading-relaxed">
+      Discover handcrafted workspace essentials, artisan kitchenware, and acoustic audio objects
+      crafted for daily longevity.
+    </p>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+    @for (sk of [1, 2, 3, 4, 5, 6, 7, 8]; track sk) {
+    <app-product-card-skeleton></app-product-card-skeleton>
     }
   </div>
-</div>
+  }
+
+  <!-- Error State -->
+  @else if (hasError()) {
+  <div
+    class="py-20 px-6 flex flex-col items-center justify-center text-center max-w-md mx-auto my-6 bg-gray-50/60 rounded-3xl border border-gray-100">
+    <div class="w-16 h-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mb-5 shadow-inner">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+        stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+      </svg>
+    </div>
+    <h3 class="text-gray-900 font-bold text-xl tracking-tight mb-2">Something went wrong</h3>
+    <p class="text-gray-500 text-sm leading-relaxed mb-6">
+      We couldn't load the products right now. Please check your connection and try again.
+    </p>
+    <button (click)="loadProducts()"
+      class="inline-flex items-center justify-center gap-2 bg-emerald-800 hover:bg-emerald-900 text-white font-medium text-sm px-6 py-3 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+        stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </svg>
+      <span>Try Again</span>
+    </button>
+  </div>
+  }
+
+  <!-- Empty State -->
+  @else if (currentProducts().length === 0 && !isLoading()) {
+  <div
+    class="py-20 px-6 flex flex-col items-center justify-center text-center max-w-md mx-auto my-6 bg-gray-50/60 rounded-3xl border border-gray-100">
+    <div
+      class="w-16 h-16 bg-emerald-50 text-emerald-800 rounded-2xl flex items-center justify-center mb-5 shadow-inner">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+        stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+      </svg>
+    </div>
+    <h3 class="text-gray-900 font-bold text-xl tracking-tight mb-2">No Products Found</h3>
+    <p class="text-gray-500 text-sm leading-relaxed">
+      We are currently restocking our inventory. Please check back later for new arrivals.
+    </p>
+  </div>
+  }
+
+  <!-- Success State -->
+  @else {
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+    @for (product of currentProducts(); track product.id) {
+    <app-product-card [product]="product" (AddToCart)="addToCart($event)"></app-product-card>
+    }
+  </div>
+
+  <div class="flex flex-col sm:flex-row items-center justify-between gap-4 py-4">
+
+    <div class="text-sm text-gray-500 font-medium">
+      Showing
+      <span class="font-semibold text-gray-700">{{ (currentPage() - 1) * pageSize + 1 }}</span>
+      to
+      <span class="font-semibold text-gray-700">{{ math.min(currentPage() * pageSize, allproducts().length) }}</span>
+      of
+      <span class="font-semibold text-gray-700">{{ allproducts().length }}</span>
+      results
+    </div>
+
+    <div class="flex items-center gap-1.5 flex-wrap justify-center">
+      <button
+        class="px-3.5 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+        (click)="updateCurrentProducts(currentPage() - 1)" [disabled]="currentPage() === 1" aria-label="Previous Page">
+        Previous
+      </button>
+
+      @for (page of getPaginationNumbers(); track $index) {
+      @if (page === '...') {
+      <span class="px-2 text-gray-400 font-bold">...</span>
+      } @else {
+      <button (click)="updateCurrentProducts(+page)" [class.bg-emerald-800]="currentPage() === page"
+        [class.text-white]="currentPage() === page" [class.bg-white]="currentPage() !== page"
+        [class.text-gray-700]="currentPage() !== page"
+        [attr.aria-current]="currentPage() === page ? 'page' : null"
+        [attr.aria-label]="'Page ' + page"
+        class="w-10 h-10 flex items-center justify-center text-sm font-semibold border border-gray-200 rounded-xl cursor-pointer shadow-sm transition-colors">
+        {{ page }}
+      </button>
+      }
+      }
+
+      <button
+        class="px-3.5 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+        (click)="updateCurrentProducts(currentPage() + 1)" [disabled]="currentPage() === totalPages()" aria-label="Next Page">
+        Next
+      </button>
+    </div>
+
+  </div>
+  }
+</section>
