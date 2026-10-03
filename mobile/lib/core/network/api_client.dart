@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:mobile/core/errors/dio_exception_handler.dart';
+import 'package:mobile/core/errors/dio_exception_failure_handler.dart';
 mixin ApiClientBase {
   Dio get dio;
 }

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:mobile/core/errors/exception.dart';
+import 'package:mobile/core/errors/failures.dart';
 
 extension DioExceptionX on DioException {
   Exception handleDioExceptionError() {
@@ -42,5 +43,19 @@ extension DioExceptionX on DioException {
       message: message ?? 'Server error',
       statusCode: response?.statusCode,
     );
+  }
+
+  Failure handleDioFailure() {
+    final exception = handleDioExceptionError();
+
+    if (exception is ServerException) {
+      return ServerFailure(exception.message);
+    }
+
+    if (exception is NetworkException) {
+      return NetworkFailure(exception.message);
+    }
+
+    return const NetworkFailure('Unexpected network error occurred');
   }
 }
