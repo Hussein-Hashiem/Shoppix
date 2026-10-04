@@ -4,3 +4,7 @@
 @source "../node_modules/flowbite";
 
 @import 'tailwindcss';
+
+html {
+  scroll-behavior: smooth;
+}

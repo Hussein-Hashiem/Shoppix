@@ -1,1 +1,81 @@
-<p>product-details works!</p>
+<main class="px-6 md:px-12 py-8 bg-gray-50">
+  <!-- nav -->
+  <nav class="flex mb-8" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+      <li class="inline-flex items-center">
+        <a routerLink="/home"
+          class="inline-flex items-center gap-1.5 text-sm font-medium text-body hover:text-emerald-800">
+          <svg lucideHouse [size]="16"></svg>
+          Home
+        </a>
+      </li>
+      <li aria-current="page">
+        <div class="flex items-center space-x-1.5">
+          <span class="text-sm text-neutral-400">/</span>
+          <span class="inline-flex items-center text-sm font-medium text-body-subtle">{{prodDetails()?.name}}</span>
+        </div>
+      </li>
+    </ol>
+  </nav>
+
+  <!-- main prouduct layout -->
+  <section class="grid md:grid-cols-[400px_1fr] gap-10">
+    <div class="pb-5">
+      <div
+        class="bg-white rounded-xl shadow-sm hover:shadow-md p-8 flex items-center justify-center overflow-hidden group transition-all duration-300">
+        <div class="relative w-85 aspect-square">
+          <img [src]="prodDetails()?.imageUrl" [alt]="prodDetails()?.name"
+            class="rounded-xl w-full h-full object-center object-cover group-hover:scale-105 transition-all duration-300">
+          <span class="absolute top-4 left-4 bg-white text-neutral-700 px-3 py-1 rounded-full">Stock:
+            {{prodDetails()?.stockQuantity}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col space-y-6">
+      <h1 class="mb-4 text-4xl font-extrabold leading-11 text-gray-900">{{prodDetails()?.name}}</h1>
+      <span class="text-4xl font-bold leading-11 text-emerald-800 ">${{prodDetails()?.price}}</span>
+      <p class="pt-2 text-olive-700">{{prodDetails()?.description}}</p>
+      <div class="pt-6 flex flex-wrap items-center gap-3">
+        <div class="p-2 flex items-center gap-2 bg-white rounded-xl shadow-sm">
+          <button (click)="changeAmount(-1)" class="w-8 h-8 flex items-center justify-center rounded-[8px] bg-gray-50 hover:bg-gray-100 transition-all duration-300 cursor-pointer
+            disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-gray-50" [disabled]="amount() <= 1">
+            <svg lucideMinus [size]="10"></svg>
+          </button>
+          <span class="font-bold text-[17px]">{{amount()}}</span>
+          <button (click)="changeAmount(1)" class="w-8 h-8 flex items-center justify-center rounded-[8px] bg-gray-50 hover:bg-gray-100 transition-all duration-300 cursor-pointer
+            disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-gray-50"
+            [disabled]="amount() + productCartQuantity() >= prodDetails()!.stockQuantity">
+            <svg lucidePlus [size]="10"></svg>
+          </button>
+        </div>
+        <button (click)="onAddToCart(); amount.set(1)" [disabled]="isOutOfStock()" [class.opacity-50]="isOutOfStock()"
+          [aria-label]="isOutOfStock() ? 'Reached Stock Limit': 'Add to cart'"
+          class="px-4 py-3 rounded-xl flex items-center gap-2.5 shadow-md hover:shadow-sm bg-emerald-800 hover:bg-emerald-900 text-white cursor-pointer transition-all duration-300">
+          @if (isOutOfStock()) {
+          <span>Reached Stock Limit</span>
+          } @else {
+          <svg lucideShoppingCartPlus [size]="16"></svg>
+          <span class="text-sm font-bold flex items-center gap-2">
+            Add to Cart
+            <span class="inline-flex w-1.5 h-1.5 rounded-full bg-white"></span>
+            $ {{amount() * (prodDetails()?.price || 1)}}
+          </span>
+          }
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- related / recommendations -->
+  <section class="space-y-8 pt-22">
+    <div>
+      <span class="mb-1 text-xs text-emerald-800 font-bold uppercase">Curated Pairings</span>
+      <h2 class="text-[28px] text-gray-900 font-bold">You might also like</h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        @for(relatedProd of relatedProds(); track relatedProd.id) {
+        <app-product-card [product]="relatedProd" (AddToCart)="addToCart($event)"></app-product-card>
+        }
+      </div>
+    </div>
+  </section>
+</main>
