@@ -9,7 +9,7 @@ import { CartService } from '../../../core/services/cart.service';
   styleUrl: './navbar.css',
   templateUrl: './navbar.html',
 })
-export class Navbar { 
+export class Navbar {
   // Injections
   cartService = inject(CartService);
 }
