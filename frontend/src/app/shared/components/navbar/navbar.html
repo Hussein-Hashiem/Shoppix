@@ -13,7 +13,7 @@
       <ul
         class="font-medium flex flex-col md:items-center p-4 md:p-0 mt-4 max-md:shadow-md rounded-base bg-neutral-secondary-soft md:flex-row md:space-x-3 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-neutral-primary max-md:space-y-3">
         <li>
-          <a routerLink="/cart" routerLinkActive="bg-green-800 text-white"
+          <a routerLink="/cart" routerLinkActive="!bg-green-800 !text-white "
             class="relative flex items-center md:justify-center gap-2 text-sm font-medium p-2 text-heading bg-white shadow-sm hover:shadow-md hover:-translate-y-0.5 max-md:hover:bg-gray-50 rounded transition-all duration-300">
 
             <svg lucideShoppingBag></svg>
@@ -22,14 +22,14 @@
 
             @if (cartService.totalCartCount() > 0) {
             <span
-              class="absolute -top-2 -right-2 bg-emerald-800 text-white text-2xs font-bold px-1.5 py-0.5 rounded-full shadow-md">
+              class="absolute -top-2 -right-2 bg-emerald-800 text-white text-2xs font-bold px-1.5 py-0.5 rounded-full shadow-md ring-2 ring-white" >
               {{ cartService.totalCartCount() }}
             </span>
             }
           </a>
         </li>
         <li>
-          <a routerLink="order-history" routerLinkActive="bg-green-800 text-white"
+          <a routerLink="order-history" routerLinkActive="!bg-green-800 !text-white"
             class="flex items-center md:justify-center gap-2 text-sm font-medium p-2 text-heading bg-white shadow-sm hover:shadow-md hover:-translate-y-0.5 max-md:hover:bg-gray-50 rounded transition-all duration-300">
             <svg lucideReceiptText></svg>
             <span class="md:hidden">Orders</span>
