@@ -1,4 +1,6 @@
-class RegisterModel {
+import 'package:mobile/features/auth/domain/entities/register_entity.dart';
+
+class RegisterModel extends RegisterEntity {
   final String email;
   final String name;
   final String userId;
