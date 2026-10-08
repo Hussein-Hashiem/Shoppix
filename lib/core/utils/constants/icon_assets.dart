@@ -1,0 +1,4 @@
+class IconAssets {
+  IconAssets._();
+  
+}
