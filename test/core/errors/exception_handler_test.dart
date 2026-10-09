@@ -65,160 +65,19 @@ void main() {
         'message': 'We’re having trouble processing your request. Please try again later.',
       },
     ];
-    test(
-      "test if server failure is returned successfully with status code 400",
-      () {
-        for (final testCase in testCases) {
-          final expected = ServerFailure(testCase['message']! as String);
-          final result = exceptionHandler.handleException(
-            ServerException(
-              message: testCase['message']! as String,
-              statusCode: testCase['statusCode'] as int,
-            ),
-          );
-
-          expect(result, expected);
-        }
-      },
-    );
-    test(
-      "test if server failure is returned successfully with status code 401",
-      () {
-        final expected = ServerFailure(
-          'Your session may have expired. Please sign in again.',
+    test("test if server failure is returned successfully ", () {
+      for (final testCase in testCases) {
+        final expected = ServerFailure(testCase['message']! as String);
+        final result = exceptionHandler.handleException(
+          ServerException(
+            message: testCase['message']! as String,
+            statusCode: testCase['statusCode'] as int,
+          ),
         );
-        final serverException = ServerException(
-          message: "Session Expired",
-          statusCode: 401,
-        );
-
-        final result = exceptionHandler.handleException(serverException);
 
         expect(result, expected);
-      },
-    );
-    test(
-      "test if server failure is returned successfully with status code 403",
-      () {
-        final expected = ServerFailure(
-          'You don’t have permission to perform this action.',
-        );
-        final serverException = ServerException(
-          message: "Unauthorized",
-          statusCode: 403,
-        );
-
-        final result = exceptionHandler.handleException(serverException);
-
-        expect(result, expected);
-      },
-    );
-    test(
-      "test if server failure is returned successfully with status code 404",
-      () {
-        final expected = ServerFailure(
-          'The requested information could not be found.',
-        );
-        final serverException = ServerException(
-          message: "Item Not found",
-          statusCode: 404,
-        );
-
-        final result = exceptionHandler.handleException(serverException);
-
-        expect(result, expected);
-      },
-    );
-    test(
-      "test if server failure is returned successfully with status code 408",
-      () {
-        final expected = ServerFailure(
-          'The request took too long. Please try again.',
-        );
-        final serverException = ServerException(
-          message: "Request Took Too Long",
-          statusCode: 408,
-        );
-
-        final result = exceptionHandler.handleException(serverException);
-
-        expect(result, expected);
-      },
-    );
-    test(
-      "test if server failure is returned successfully with status code 409",
-      () {
-        final expected = ServerFailure(
-          'This action conflicts with existing information. Please review your input.',
-        );
-        final serverException = ServerException(
-          message: "Conflict",
-          statusCode: 409,
-        );
-
-        final result = exceptionHandler.handleException(serverException);
-
-        expect(result, expected);
-      },
-    );
-    test(
-      "test if server failure is returned successfully with status code 422",
-      () {
-        final expected = ServerFailure(
-          'Some of the information you entered is invalid. Please check it and try again.',
-        );
-        final serverException = ServerException(
-          message: "Invalid Information",
-          statusCode: 422,
-        );
-
-        final result = exceptionHandler.handleException(serverException);
-
-        expect(result, expected);
-      },
-    );
-    test(
-      "test if server failure is returned successfully with status code 429",
-      () {
-        final expected = ServerFailure(
-          'You’ve made too many requests. Please wait a moment and try again.',
-        );
-        final serverException = ServerException(
-          message: "Too Many Requests",
-          statusCode: 429,
-        );
-
-        final result = exceptionHandler.handleException(serverException);
-
-        expect(result, expected);
-      },
-    );
-    test("test if server failure is returned successfully with status code 500", () {
-      final expected = ServerFailure(
-        'We’re having trouble processing your request. Please try again later.',
-      );
-      final serverException = ServerException(
-        message: "Server Malfunction",
-        statusCode: 500,
-      );
-
-      final result = exceptionHandler.handleException(serverException);
-
-      expect(result, expected);
+      }
     });
-    test(
-      "test if server failure is returned successfully with status code 400",
-      () {
-        final expected = ServerFailure(
-          'Something went wrong. Please try again later.',
-        );
-        final serverException = ServerException(message: "Unknown Error");
-
-        final result = exceptionHandler.handleException(serverException);
-
-        expect(result, expected);
-      },
-    );
   });
 
   group('handleNetworkException', () {

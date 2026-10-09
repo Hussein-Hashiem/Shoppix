@@ -50,16 +50,16 @@ void main() {
       ).called(1);
     });
     test("check if the method returns ServerException when it fails", () async {
-      final ServerFailure expectedFailure = ServerFailure('Not Found');
+      final ServerFailure expectedFailure = ServerFailure(
+        'The requested information could not be found.',
+      );
       when(
         () => serverDataSourceMock.register(
           email: 'alimohamed@gmail.com',
           name: 'ali',
           password: '1234562A',
         ),
-      ).thenThrow(
-        (_) async => ServerException(message: 'Not Found', statusCode: 404),
-      );
+      ).thenThrow(ServerException(message: 'Not Found', statusCode: 404));
 
       final result = await authRepo.register(
         name: 'ali',
@@ -72,6 +72,53 @@ void main() {
         () => serverDataSourceMock.register(
           email: 'alimohamed@gmail.com',
           name: 'ali',
+          password: '1234562A',
+        ),
+      ).called(1);
+    });
+  });
+  group("testing the outputs of the register method", () {
+    test("check if the method returns unit when successful", () async {
+      when(
+        () => serverDataSourceMock.login(
+          email: 'alimohamed@gmail.com',
+          password: '1234562A',
+        ),
+      ).thenAnswer((_) async => <String, dynamic>{});
+
+      final result = await authRepo.login(
+        email: 'alimohamed@gmail.com',
+        password: '1234562A',
+      );
+
+      expect(result, right(unit));
+      verify(
+        () => serverDataSourceMock.login(
+          email: 'alimohamed@gmail.com',
+          password: '1234562A',
+        ),
+      ).called(1);
+    });
+    test("check if the method returns ServerFailure when it fails", () async {
+      final ServerFailure expectedFailure = ServerFailure(
+        'The requested information could not be found.',
+      );
+      when(
+        () => serverDataSourceMock.login(
+          email: 'alimohamed@gmail.com',
+          password: '1234562A',
+        ),
+      ).thenThrow(ServerException(message: 'Not Found', statusCode: 404));
+
+      final result = await authRepo.login(
+        email: 'alimohamed@gmail.com',
+        password: '1234562A',
+      );
+
+      expect(result, left(expectedFailure));
+      verify(
+        () => serverDataSourceMock.login(
+          email: 'alimohamed@gmail.com',
           password: '1234562A',
         ),
       ).called(1);
