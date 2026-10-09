@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:mobile/core/errors/exception.dart';
 import 'package:mobile/core/errors/exception_handler.dart';
@@ -24,6 +26,9 @@ class AuthRepoImpl implements AuthRepo {
     } on NetworkException catch (e) {
       final ExceptionHandler exceptionHandler = ExceptionHandler();
       return left(exceptionHandler.handleException(e));
+    } catch (e) {
+      log(e.toString());
+      rethrow;
     }
   }
 
@@ -46,6 +51,9 @@ class AuthRepoImpl implements AuthRepo {
     } on NetworkException catch (e) {
       final ExceptionHandler exceptionHandler = ExceptionHandler();
       return left(exceptionHandler.handleException(e));
+    } catch (e) {
+      log(e.toString());
+      rethrow;
     }
   }
 }
