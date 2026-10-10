@@ -1,27 +1,15 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
-  Validators
-} from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { AbstractControl, FormBuilder, FormGroup, Validators, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../core/services/auth';
 
-export const passwordMatchValidator: ValidatorFn = (
-  control: AbstractControl
-): ValidationErrors | null => {
-  const password = control.get('password');
-  const confirmPassword = control.get('confirmPassword');
+function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+  const password = control.get('password')?.value;
+  const confirmPassword = control.get('confirmPassword')?.value;
 
-  if (password && confirmPassword && password.value !== confirmPassword.value) {
-    return { passwordMismatch: true };
-  }
-  return null;
-};
+  return password === confirmPassword ? null : { passwordMismatch: true };
+}
 
 @Component({
   selector: 'app-register',
@@ -34,8 +22,14 @@ export class Register {
   registerForm: FormGroup;
   showPassword = false;
   showConfirmPassword = false;
+  isLoading = false;
+  errorMessage = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.registerForm = this.fb.group(
       {
         fullName: ['', [Validators.required, Validators.minLength(3)]],
@@ -57,11 +51,42 @@ export class Register {
   }
 
   onSubmit(): void {
-    if (this.registerForm.valid) {
-      console.log('Register Payload:', this.registerForm.value);
-      // استدعاء Auth Service هنا
-    } else {
+    if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
+      return;
     }
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    // تجهيز البيانات المرسلة للباك إند (غالباً الباك إند لا يحتاج acceptTerms أو confirmPassword)
+    const { fullName, email, password } = this.registerForm.value;
+    const payload = {
+      name: fullName, // تأكدي هل الباك إند مسميها name أم fullName
+      email,
+      password
+    };
+
+    // إرسال الـ Request للباك إند
+    this.authService.register(payload as any).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        console.log('Registration successful:', response);
+        
+        // لو الباك بيرجع Token ممكن تخزنيه في localStorage:
+        if (response.token) {
+          localStorage.setItem('token', response.token);
+        }
+
+        // تحويل المستخدم لصفحة الـ Login أو الـ Home
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        this.isLoading = false;
+        console.error('Registration failed:', err);
+        // عرض رسالة الخطأ القادمة من السيرفر
+        this.errorMessage = err.error?.message || 'حدث خطأ أثناء التسجيل، يرجى المحاولة لاحقاً';
+      }
+    });
   }
 }
