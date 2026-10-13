@@ -20,6 +20,7 @@ class AppTheme {
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.button,
         foregroundColor: AppColors.buttonText,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
@@ -31,6 +32,7 @@ class AppTheme {
             width: Responsive.w(1),
             color: AppColors.outlinedBorder,
           ),
+          borderRadius: BorderRadius.circular(0),
         ),
       ),
     ),

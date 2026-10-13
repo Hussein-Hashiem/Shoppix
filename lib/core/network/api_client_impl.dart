@@ -36,6 +36,11 @@ class ApiClientImpl implements ApiClient {
     try {
       return await dio.post(path, data: data, queryParameters: queryParams);
     } on DioException catch (e) {
+      print('Status: ${e.response?.statusCode}');
+      print('Requested URL: ${e.requestOptions.uri}');
+      print('Redirect location: ${e.response?.headers.value('location')}');
+      print('Response headers: ${e.response?.headers}');
+      print('Response body: ${e.response?.data}');
       throw (e.handleDioExceptionError());
     }
   }

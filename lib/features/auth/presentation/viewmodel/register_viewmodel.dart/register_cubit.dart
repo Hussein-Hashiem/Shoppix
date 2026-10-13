@@ -1,9 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/auth/domain/usecases/register_usecase.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/login_viewmodel/login_states.dart';
+import 'package:mobile/features/auth/presentation/viewmodel/register_viewmodel.dart/register_states.dart';
 
-class RegisterViewmodel extends Cubit<LoginStates> {
-  RegisterViewmodel(this.registerUsecase) : super(InitialAuthState());
+class RegisterCubit extends Cubit<RegisterState> {
+  RegisterCubit(this.registerUsecase) : super(InitialRegisterState());
   final RegisterUsecase registerUsecase;
 
   void register({
@@ -11,13 +12,13 @@ class RegisterViewmodel extends Cubit<LoginStates> {
     required String password,
     required String name,
   }) async {
-    emit(LoadingAuthState());
+    emit(LoadingRegisterState());
     final result = await registerUsecase(
       RegisterParams(email: email, password: password, name: name),
     );
     result.fold(
-      (failure) => emit(FailAuthState(message: failure.message)),
-      (success) => emit(SuccessAuthState()),
+      (failure) => emit(FailRegisterState(message: failure.message)),
+      (success) => emit(SuccessRegisterState()),
     );
   }
 }

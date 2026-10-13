@@ -8,28 +8,32 @@ class AppTextStyles {
 
   static TextStyle titleLarge = GoogleFonts.geist(
     fontWeight: FontWeight.w500,
-    color: AppColors.titleLarge,
+    color: AppColors.title,
     fontSize: Responsive.sp(26),
   );
   static TextStyle titleMedium = GoogleFonts.geist(
     fontWeight: FontWeight.w500,
-    color: AppColors.titleLarge,
-    fontSize: Responsive.sp(13),
+    color: AppColors.title,
+    fontSize: Responsive.sp(22),
   );
   static TextStyle bodyLarge = GoogleFonts.geist(
     fontWeight: FontWeight.normal,
     color: AppColors.bodyLarge,
     fontSize: Responsive.sp(14),
   );
-  static TextStyle bodyLarge = GoogleFonts.geist(
+  static TextStyle bodyMedium = GoogleFonts.geist(
     fontWeight: FontWeight.normal,
     color: AppColors.bodyLarge,
-    fontSize: Responsive.sp(14),
+    fontSize: Responsive.sp(12),
   );
-  static TextStyle bodyLarge = GoogleFonts.geist(
+  static TextStyle bodySmall = GoogleFonts.geist(
     fontWeight: FontWeight.normal,
     color: AppColors.bodyLarge,
+    fontSize: Responsive.sp(10),
+  );
+  static TextStyle hintStyle = GoogleFonts.geist(
+    fontWeight: FontWeight.normal,
+    color: AppColors.hint,
     fontSize: Responsive.sp(14),
   );
-  
 }
