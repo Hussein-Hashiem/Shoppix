@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/core/utils/constants/style.dart';
 import 'package:mobile/core/utils/responsive/responsive.dart';
 
-class LoginTextfield extends StatefulWidget {
+class CustomTextfield extends StatefulWidget {
   final String hint;
   final TextEditingController controller;
   final String? Function(String?) validator;
@@ -11,7 +11,7 @@ class LoginTextfield extends StatefulWidget {
   final bool isPassword;
   final TextInputType keyboardType;
 
-  LoginTextfield({
+  CustomTextfield({
     super.key,
     required this.hint,
     required this.controller,
@@ -23,10 +23,10 @@ class LoginTextfield extends StatefulWidget {
   });
 
   @override
-  State<LoginTextfield> createState() => _LoginTextfieldState();
+  State<CustomTextfield> createState() => _CustomTextfieldState();
 }
 
-class _LoginTextfieldState extends State<LoginTextfield> {
+class _CustomTextfieldState extends State<CustomTextfield> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(

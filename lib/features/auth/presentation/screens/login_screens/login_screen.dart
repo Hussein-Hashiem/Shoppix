@@ -13,6 +13,9 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       body: BlocConsumer<LoginCubit, LoginStates>(
         builder: (context, state) {
+          if (state is LoadingLoginState) {
+            return Center(child: CircularProgressIndicator());
+          }
           return LoginScreenWidget();
         },
         listener: (context, state) {

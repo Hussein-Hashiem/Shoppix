@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/core/di/di.dart';
+import 'package:mobile/core/routing/app_router.dart';
 import 'package:mobile/core/utils/responsive/responsive.dart';
 import 'package:mobile/core/utils/theme/app_theme.dart';
-import 'package:mobile/features/auth/presentation/screens/login_screens/login_screen.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/login_viewmodel/login_cubit.dart';
-import 'package:mobile/features/auth/presentation/widgets/login_widgets/login_screen_widget.dart';
+import 'package:mobile/features/auth/presentation/viewmodel/register_viewmodel.dart/register_cubit.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +14,10 @@ void main() {
 
   runApp(
     MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => sl<LoginCubit>())],
+      providers: [
+        BlocProvider(create: (context) => sl<LoginCubit>()),
+        BlocProvider(create: (context) => sl<RegisterCubit>()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -25,14 +28,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: appRouter,
       builder: (context, child) {
         Responsive.init(context);
         return child!;
       },
       title: 'Flutter Demo',
       theme: AppTheme.lightTheme,
-      home: LoginScreen(),
     );
   }
 }

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mobile/core/routing/routes.dart';
 import 'package:mobile/core/utils/constants/colors.dart';
 import 'package:mobile/core/utils/constants/icon_assets.dart';
 import 'package:mobile/core/utils/constants/image_assets.dart';
 import 'package:mobile/core/utils/responsive/responsive.dart';
 import 'package:mobile/core/utils/validators/validators.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/login_viewmodel/login_cubit.dart';
-import 'package:mobile/features/auth/presentation/widgets/login_widgets/login_textfield.dart';
+import 'package:mobile/widgets/custom_textfield.dart';
 import 'package:mobile/widgets/custom_elevated_button.dart';
 
 class LoginScreenWidget extends StatefulWidget {
@@ -93,7 +95,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
                   ],
                 ),
                 SizedBox(height: Responsive.h(4)),
-                LoginTextfield(
+                CustomTextfield(
                   hint: "curator@shoppix.app",
                   controller: email,
                   validator: (val) {
@@ -114,7 +116,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
                   ],
                 ),
                 SizedBox(height: Responsive.h(4)),
-                LoginTextfield(
+                CustomTextfield(
                   hint: "••••••••••••",
                   controller: password,
                   validator: (val) {
@@ -159,11 +161,16 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
                       "Don't have an account? ",
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
-                    Text(
-                      "Create an Account",
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: AppColors.outlinedBorder,
-                        decoration: TextDecoration.underline,
+                    InkWell(
+                      onTap: () {
+                        context.pushNamed(Routes.register);
+                      },
+                      child: Text(
+                        "Create an Account",
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: AppColors.outlinedBorder,
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
                     ),
                   ],
