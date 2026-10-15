@@ -3,16 +3,16 @@ export interface UserModel {
   id: string | number;
   name: string;
   email: string;
-  role?: string;
-  avatar?: string;
-  createdAt?: string;
+  // role?: string;
+  // avatar?: string;
+  // createdAt?: string;
 }
 
 // البيانات المطلوبة عند تسجيل الدخول (Login)
 export interface LoginRequest {
   email: string;
   password: string;
-  rememberMe?: boolean;
+  // rememberMe?: boolean;
 }
 
 // البيانات المطلوبة عند إنشاء حساب جديد (Register)

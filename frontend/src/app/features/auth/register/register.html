@@ -84,7 +84,23 @@
             </svg>
           </button>
         </div>
+        <!-- <div *ngIf="registerForm.get('password')?.dirty" class="password-checklist">
+          <div class="check-item" [class.valid]="hasMinLength">
+            <span>{{ hasMinLength ? '✓' : '•' }}</span> At least 8 characters
+          </div>
+          <div class="check-item" [class.valid]="hasUpperCase && hasLowerCase">
+            <span>{{ (hasUpperCase && hasLowerCase) ? '✓' : '•' }}</span> Upper & lowercase letters
+          </div>
+          <div class="check-item" [class.valid]="hasNumber">
+            <span>{{ hasNumber ? '✓' : '•' }}</span> At least 1 number
+          </div>
+          <div class="check-item" [class.valid]="hasSpecialChar">
+            <span>{{ hasSpecialChar ? '✓' : '•' }}</span> At least 1 special character (e.g. #, @, $, !)
+          </div>
+        </div> -->
       </div>
+
+      
 
       <!-- Confirm Password -->
       <div class="form-group">
@@ -127,16 +143,34 @@
         </label>
       </div>
 
-      <div *ngIf="errorMessage" class="text-red-500 text-sm text-center mb-3">
+      <!-- <div *ngIf="errorMessage" class="text-red-500 text-sm text-center mb-3">
         {{ errorMessage }}
+      </div> -->
+      <div *ngIf="errorMessage" class="error-text" style="text-align: center; margin-bottom: 12px; font-weight: 500;">
+          {{ errorMessage }}
       </div>
+
+
       <!-- Submit Button -->
-      <button type="submit" [disabled]="registerForm.invalid" class="submit-btn">
+      <!-- <button type="submit" [disabled]="registerForm.invalid" class="submit-btn">
         <span>Create Account</span>
         <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
         </svg>
+      </button> -->
+      <button type="submit" [disabled]="registerForm.invalid || isLoading" class="submit-btn">
+        <span *ngIf="!isLoading">Create Account</span>
+        <span *ngIf="isLoading">Creating account...</span>
+        <svg *ngIf="!isLoading" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+        </svg>
       </button>
+
+      <pre style="direction: ltr; text-align: left; background: #eee; padding: 10px; font-size: 11px;">
+      Form Errors: {{ registerForm.errors | json }}
+      Password Errors: {{ registerForm.get('password')?.errors | json }}
+      Form Valid: {{ registerForm.valid }}
+      </pre>
 
       <!-- Divider -->
       <div class="divider">
