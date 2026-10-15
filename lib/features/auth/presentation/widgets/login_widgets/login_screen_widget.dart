@@ -28,7 +28,9 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        key: Key("appBar"),
         title: Text(
+          key: Key("title"),
           "Checkout Workflow",
           style: Theme.of(context).textTheme.titleMedium,
         ),
@@ -96,6 +98,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
                 ),
                 SizedBox(height: Responsive.h(4)),
                 CustomTextfield(
+                  key: Key("email"),
                   hint: "curator@shoppix.app",
                   controller: email,
                   validator: (val) {
@@ -117,6 +120,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
                 ),
                 SizedBox(height: Responsive.h(4)),
                 CustomTextfield(
+                  key: Key("password"),
                   hint: "••••••••••••",
                   controller: password,
                   validator: (val) {
