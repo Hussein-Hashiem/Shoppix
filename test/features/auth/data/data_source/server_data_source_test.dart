@@ -4,6 +4,7 @@ import 'package:mobile/core/errors/exception.dart';
 import 'package:mobile/core/network/api_client.dart';
 import 'package:mobile/core/utils/constants/endpoints.dart';
 import 'package:mobile/features/auth/data/data_source/server_datasource.dart';
+import 'package:mobile/features/auth/data/models/login_model.dart';
 import 'package:mobile/features/auth/data/models/register_model.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -103,6 +104,13 @@ void main() {
     // query parameters
     final Map<String, dynamic> query = {'Content-Type': 'application/json'};
     test("check if the method calls the post method when successful", () async {
+      final expected = LoginModel(
+        token: '1234',
+        name: 'ali',
+        email: 'jfodisjfod',
+        refreshToken: "1234",
+        expiresIn: 1800,
+      );
       when(
         () => apiClientMock.post(
           ApiEndpoints.baseUrl + ApiEndpoints.login,
@@ -112,18 +120,22 @@ void main() {
       ).thenAnswer(
         (_) async => Response(
           requestOptions: RequestOptions(path: '/test'),
-          // here, empty map is <dynaimc, dynamic> by default, so we need to instantiate the map with types directly
-          // without as key word
-          data: <String, dynamic>{},
+          data: <String, dynamic>{
+            'name': 'ali',
+            'email': "jfodisjfod",
+            'token': "1234",
+            'refreshToken': '1234',
+            'expiresIn': 1800,
+          },
         ),
       );
 
-      final Map<String, dynamic> result = await serverDatasource.login(
+      final result = await serverDatasource.login(
         email: 'alimohamed@gmail.com',
         password: '12345678ji',
       );
 
-      expect(result, <String, dynamic>{});
+      expect(result, expected);
       verify(
         () => apiClientMock.post(
           ApiEndpoints.baseUrl + ApiEndpoints.login,

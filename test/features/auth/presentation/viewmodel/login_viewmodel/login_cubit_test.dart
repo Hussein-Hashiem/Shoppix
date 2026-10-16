@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/core/errors/failures.dart';
+import 'package:mobile/features/auth/domain/entities/login_entity.dart';
 import 'package:mobile/features/auth/domain/usecases/login_usecase.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/login_viewmodel/login_cubit.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/login_viewmodel/login_states.dart';
@@ -23,7 +24,7 @@ void main() {
           () => loginUsecaseMock(
             LoginParams(email: "alimohamed@gmail.com", password: '1234567Aa@'),
           ),
-        ).thenAnswer((_) async => right(unit));
+        ).thenAnswer((_) async => right(LoginEntity(token: '1234')));
         return LoginCubit(loginUsecaseMock);
       },
       act: (bloc) =>

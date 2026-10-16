@@ -6,6 +6,7 @@ import 'package:mobile/core/utils/responsive/responsive.dart';
 import 'package:mobile/core/utils/theme/app_theme.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/login_viewmodel/login_cubit.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/register_viewmodel.dart/register_cubit.dart';
+import 'package:mobile/features/product/presentation/viewmodel/get_all_products_cubit/get_all_products_cubit.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +18,7 @@ void main() {
       providers: [
         BlocProvider(create: (context) => sl<LoginCubit>()),
         BlocProvider(create: (context) => sl<RegisterCubit>()),
+        BlocProvider(create: (context) => sl<GetAllProductsCubit>()),
       ],
       child: const MyApp(),
     ),
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget {
         Responsive.init(context);
         return child!;
       },
-      title: 'Flutter Demo',
+      title: 'Shoppix',
       theme: AppTheme.lightTheme,
     );
   }

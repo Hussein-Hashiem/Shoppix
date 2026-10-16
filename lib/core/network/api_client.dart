@@ -1,8 +1,29 @@
+import 'package:dio/dio.dart';
+
 abstract class ApiClient {
-  Future get(String path, {Map<String, dynamic>? queryParams});
-  Future post(String path, {dynamic data, Map<String, dynamic>? queryParams});
-  Future put(String path, {dynamic data, Map<String, dynamic>? queryParams});
-  Future patch(String path, {dynamic data, Map<String, dynamic>? queryParams});
+  Future<Response> get(
+    String path, {
+    Map<String, dynamic>? queryParams,
+    String? token,
+  });
+  Future post(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParams,
+    String? token,
+  });
+  Future put(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParams,
+    String? token,
+  });
+  Future patch(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParams,
+    String? token,
+  });
 }
 
 // import 'package:dio/dio.dart';

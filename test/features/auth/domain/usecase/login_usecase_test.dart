@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/core/errors/failures.dart';
+import 'package:mobile/features/auth/domain/entities/login_entity.dart';
 import 'package:mobile/features/auth/domain/repo/auth_repo.dart';
 import 'package:mobile/features/auth/domain/usecases/login_usecase.dart';
 import 'package:mocktail/mocktail.dart';
@@ -19,11 +20,11 @@ void main() {
     });
     test("check if call method returns map on success", () async {
       when(() => repoMock.login(email: params.email, password: params.password))
-          .thenAnswer((_) async => right(unit));
+          .thenAnswer((_) async => right(LoginEntity(token: '1234')));
 
       final result = await loginUsecase(params);
 
-      expect(result, right(unit));
+      expect(result, right(LoginEntity(token: '1234')));
       verify(
         () => repoMock.login(email: params.email, password: params.password),
       ).called(1);

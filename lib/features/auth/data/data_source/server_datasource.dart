@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:mobile/core/errors/exception.dart';
 import 'package:mobile/core/network/api_client.dart';
 import 'package:mobile/core/utils/constants/endpoints.dart';
+import 'package:mobile/features/auth/data/models/login_model.dart';
 import 'package:mobile/features/auth/data/models/register_model.dart';
 
 class ServerDatasource {
@@ -36,7 +37,7 @@ class ServerDatasource {
     }
   }
 
-  Future<Map<String, dynamic>> login({
+  Future<LoginModel> login({
     required String email,
     required String password,
   }) async {
@@ -47,10 +48,7 @@ class ServerDatasource {
         data: data,
         queryParams: query,
       );
-
-      // here, login api call doesn't return anything, so we didn't make models or entities for the login call
-      // so, we will return the map itself (which is empty)
-      return response.data as Map<String, dynamic>;
+      return LoginModel.fromJson(response.data);
     } on ServerException catch (e) {
       rethrow;
     }

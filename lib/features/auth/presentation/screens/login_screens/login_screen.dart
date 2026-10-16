@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mobile/core/routing/routes.dart';
 import 'package:mobile/core/utils/constants/colors.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/login_viewmodel/login_cubit.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/login_viewmodel/login_states.dart';
 import 'package:mobile/features/auth/presentation/widgets/login_widgets/login_screen_widget.dart';
+import 'package:mobile/features/product/presentation/viewmodel/get_all_products_cubit/get_all_products_cubit.dart';
 
 class LoginScreen extends StatelessWidget {
   const new({super.key});
@@ -31,6 +34,8 @@ class LoginScreen extends StatelessWidget {
                 duration: Duration(seconds: 5),
               ),
             );
+            BlocProvider.of<GetAllProductsCubit>(context).getAllProducts();
+            context.pushReplacement(Routes.browseProducts);
           } else if (state is FailLoginState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
