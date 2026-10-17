@@ -15,11 +15,11 @@ import { getApiErrorMessages } from '../../../core/utils/error-handling.util';
 import { finalize, from, Observable, of } from 'rxjs';
 import { canDeactivateComponent } from '../../../core/guards/save-changes-guard';
 import { ConfirmSwal } from '../../../core/utils/swal.config';
-
+import { LucideEye , LucideEyeClosed , LucideMail , LucideLock , LucideUser , LucideShieldCheck } from "@lucide/angular"
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink , LucideEye , LucideEyeClosed , LucideMail , LucideLock , LucideUser , LucideShieldCheck ],
   templateUrl: './register.html',
   styleUrls: ['./register.css']
 })
