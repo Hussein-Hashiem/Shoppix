@@ -1,6 +1,80 @@
-<main class="px-6 md:px-12 py-8 bg-gray-50">
-  <!-- nav -->
-  <nav class="flex mb-8" aria-label="Breadcrumb">
+<main class="px-6 md:px-12 py-8 bg-gray-50 min-h-screen">
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+  <div class="animate-pulse space-y-8">
+    <!-- Breadcrumb Skeleton -->
+    <div class="h-4 bg-gray-200 rounded w-48"></div>
+
+    <!-- Main Layout Skeleton -->
+    <div class="grid md:grid-cols-[400px_1fr] gap-10">
+      <div class="bg-white rounded-xl p-8 aspect-square flex items-center justify-center">
+        <div class="w-full h-full bg-gray-200 rounded-xl"></div>
+      </div>
+      <div class="flex flex-col space-y-6 pt-4">
+        <div class="h-10 bg-gray-200 rounded w-3/4"></div>
+        <div class="h-8 bg-gray-200 rounded w-1/4"></div>
+        <div class="h-20 bg-gray-200 rounded w-full"></div>
+        <div class="h-12 bg-gray-200 rounded w-1/2"></div>
+      </div>
+    </div>
+  </div>
+  }
+
+  <!-- Error State -->
+  @else if (hasError()) {
+  <div
+    class="py-20 px-6 flex flex-col items-center justify-center text-center max-w-md mx-auto my-12 bg-white rounded-3xl border border-gray-100 shadow-sm">
+    <div class="w-16 h-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mb-5 shadow-inner">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+        stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+      </svg>
+    </div>
+    <h3 class="text-gray-900 font-bold text-xl tracking-tight mb-2">Something went wrong</h3>
+    <p class="text-gray-500 text-sm leading-relaxed mb-6">
+      We couldn't load the product details right now. Please check your connection and try again.
+    </p>
+    <button (click)="loadProduct()"
+      class="inline-flex items-center justify-center gap-2 bg-emerald-800 hover:bg-emerald-900 text-white font-medium text-sm px-6 py-3 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+        stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </svg>
+      <span>Try Again</span>
+    </button>
+  </div>
+  }
+
+  <!-- Empty State (Product Not Found) -->
+  @else if (!prodDetails() && !isLoading()) {
+  <div
+    class="py-20 px-6 flex flex-col items-center justify-center text-center max-w-md mx-auto my-12 bg-white rounded-3xl border border-gray-100 shadow-sm">
+    <div
+      class="w-16 h-16 bg-emerald-50 text-emerald-800 rounded-2xl flex items-center justify-center mb-5 shadow-inner">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+        stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+      </svg>
+    </div>
+    <h3 class="text-gray-900 font-bold text-xl tracking-tight mb-2">Product Not Found</h3>
+    <p class="text-gray-500 text-sm leading-relaxed mb-6">
+      The product you are looking for might have been removed or is temporarily unavailable.
+    </p>
+    <a routerLink="/products"
+      class="inline-flex items-center justify-center gap-2 bg-emerald-800 hover:bg-emerald-900 text-white font-medium text-sm px-6 py-3 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer">
+      Browse All Products
+    </a>
+  </div>
+  }
+
+  <!-- Success State -->
+  @else {
+  <!-- Breadcrumb -->
+  <div class="flex mb-8" aria-label="Breadcrumb">
     <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
       <li class="inline-flex items-center">
         <a routerLink="/home"
@@ -16,9 +90,9 @@
         </div>
       </li>
     </ol>
-  </nav>
+  </div>
 
-  <!-- main prouduct layout -->
+  <!-- main product layout -->
   <section class="grid md:grid-cols-[400px_1fr] gap-10">
     <div class="pb-5">
       <div
@@ -26,7 +100,8 @@
         <div class="relative w-85 aspect-square">
           <img [src]="prodDetails()?.imageUrl" [alt]="prodDetails()?.name"
             class="rounded-xl w-full h-full object-center object-cover group-hover:scale-105 transition-all duration-300">
-          <span class="absolute top-4 left-4 bg-white text-neutral-700 px-3 py-1 rounded-full">Stock:
+          <span
+            class="absolute top-4 left-4 bg-white text-neutral-700 px-3 py-1 rounded-full text-xs font-semibold shadow-sm">Stock:
             {{prodDetails()?.stockQuantity}}</span>
         </div>
       </div>
@@ -66,16 +141,20 @@
     </div>
   </section>
 
-  <!-- related / recommendations -->
+  <!-- related / recommendations (Only show if related products exist) -->
+  @if (relatedProds().length > 0) {
   <section class="space-y-8 pt-22">
     <div>
       <span class="mb-1 text-xs text-emerald-800 font-bold uppercase">Curated Pairings</span>
       <h2 class="text-[28px] text-gray-900 font-bold">You might also like</h2>
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-        @for(relatedProd of relatedProds(); track relatedProd.id) {
-        <app-product-card [product]="relatedProd" (AddToCart)="addToCart($event)"></app-product-card>
-        }
-      </div>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      @for(relatedProd of relatedProds(); track relatedProd.id) {
+      <app-product-card [product]="relatedProd" (AddToCart)="addToCart($event)"></app-product-card>
+      }
     </div>
   </section>
+  }
+  }
+
 </main>
