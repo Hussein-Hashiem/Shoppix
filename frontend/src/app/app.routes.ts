@@ -13,24 +13,20 @@ export const routes: Routes = [
   },
   {
     path: 'auth',
-    canActivate : [authGuard],
+    canActivate: [authGuard],
     children: [
       {
-        canDeactivate : [saveChangesGuard],
+        canDeactivate: [saveChangesGuard],
         path: 'login', loadComponent: () =>
           import('./features/auth/login/login').then((m) => m.Login), title: "Login"
       },
       {
-        canDeactivate : [saveChangesGuard],
+        canDeactivate: [saveChangesGuard],
         path: 'register', loadComponent: () =>
           import('./features/auth/register/register').then((m) => m.Register), title: "Register"
       },
       { path: '**', redirectTo: 'login' }
     ]
-  },
-  {
-    path: 'checkout', loadComponent: () =>
-      import('./features/checkout/checkout').then((m) => m.Checkout)
   },
   {
     path: 'order-history', loadComponent: () =>
