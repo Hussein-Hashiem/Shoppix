@@ -1,1 +1,101 @@
-<p>order-history works!</p>
+<div class="min-h-screen container mx-auto px-4 sm:px-6 lg:px-12 py-8 font-sans">
+
+  <!-- Breadcrumb -->
+  <div class="flex mb-8" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+      <li class="inline-flex items-center">
+        <a routerLink="/home"
+          class="inline-flex items-center gap-1.5 text-sm font-medium text-body hover:text-emerald-800">
+          <svg lucideHouse [size]="16"></svg>
+          Home
+        </a>
+      </li>
+      <li aria-current="page">
+        <div class="flex items-center space-x-1.5">
+          <span class="text-sm text-neutral-400">/</span>
+          <span class="inline-flex items-center text-sm font-medium text-body-subtle">Order History</span>
+        </div>
+      </li>
+    </ol>
+  </div>
+
+  <!-- Page Title & Description -->
+  <div class="mb-8">
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-[#111827] tracking-tight mb-2">
+      Order History
+    </h1>
+    <p class="text-gray-600 text-sm sm:text-base max-w-2xl">
+      Review your verified accepted orders, order dates, total amounts, and fulfillment statuses directly synced with
+      the order service.
+    </p>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+  <div class="grid gap-y-4">
+    @for (sk of [1, 2, 3, 4]; track sk) {
+    <app-order-card-skeleton></app-order-card-skeleton>
+    }
+  </div>
+  }
+
+  <!-- Error State -->
+  @else if (hasError()) {
+  <div
+    class="py-20 px-6 flex flex-col items-center justify-center text-center max-w-md mx-auto my-6 bg-gray-50/60 rounded-3xl border border-gray-100">
+    <div class="w-16 h-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mb-5 shadow-inner">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+        stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+      </svg>
+    </div>
+    <h3 class="text-gray-900 font-bold text-xl tracking-tight mb-2">Something went wrong</h3>
+    <p class="text-gray-500 text-sm leading-relaxed mb-6">
+      We couldn't load your order history right now. Please check your connection and try again.
+    </p>
+    <button (click)="loadOrders()"
+      class="inline-flex items-center justify-center gap-2 bg-emerald-800 hover:bg-emerald-900 text-white font-medium text-sm px-6 py-3 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+        stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </svg>
+      <span>Try Again</span>
+    </button>
+  </div>
+  }
+
+  <!-- Empty State -->
+  @else if (ordersList().length === 0 && !isLoading()) {
+  <div
+    class="py-20 px-6 flex flex-col items-center justify-center text-center max-w-md mx-auto my-6 bg-gray-50/60 rounded-3xl border border-gray-100">
+    <div
+      class="w-16 h-16 bg-emerald-50 text-emerald-800 rounded-2xl flex items-center justify-center mb-5 shadow-inner">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+        stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012-2m-6 12l2 2 4-4" />
+      </svg>
+    </div>
+    <h3 class="text-gray-900 font-bold text-xl tracking-tight mb-2">No Orders Found</h3>
+    <p class="text-gray-500 text-sm leading-relaxed mb-6">
+      You haven't placed any orders yet. Once you complete a purchase, your order details will appear here.
+    </p>
+    <a routerLink="/home"
+      class="inline-flex items-center justify-center gap-2 bg-emerald-800 hover:bg-emerald-900 text-white font-medium text-sm px-6 py-3 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer">
+      Start Shopping
+    </a>
+  </div>
+  }
+
+  <!-- Success State (Orders List) -->
+  @else {
+  <div class="grid gap-y-4">
+    @for (order of ordersList(); track order.id) {
+    <app-order-card [order]="order"></app-order-card>
+    }
+  </div>
+  }
+
+</div>

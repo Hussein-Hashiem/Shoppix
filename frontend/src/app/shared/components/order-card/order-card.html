@@ -1,0 +1,64 @@
+<div
+  class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border border-gray-100">
+
+  <!-- Order ID -->
+  <div class="flex items-center justify-between w-full md:w-auto">
+    <div class="flex flex-col">
+      <div class="flex items-center gap-2">
+        <span class="text-lg sm:text-xl font-bold text-gray-900 tracking-wide">
+          #SHP-{{ order()?.id }}
+        </span>
+        <button (click)="copyOrderId(order()?.id)"
+          class="text-gray-400 hover:text-gray-700 transition-colors p-1 cursor-pointer" title="Copy Order ID">
+          <svg lucideCopy [size]="16"></svg>
+        </button>
+      </div>
+      <span class="text-xs uppercase tracking-wider text-gray-500 font-semibold mt-0.5">
+        ORDER ID
+      </span>
+    </div>
+  </div>
+
+  <div class="hidden md:block h-10 w-px bg-gray-200"></div>
+
+  <!-- Order Date -->
+  <div class="flex items-center justify-between w-full md:w-auto border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
+    <div class="flex flex-col">
+      <div class="flex items-center gap-2.5">
+        <div class="text-emerald-800">
+          <svg lucideCalendar [size]="18"></svg>
+        </div>
+        <span class="font-bold text-gray-900 text-sm sm:text-base">
+          {{ order()?.orderDate | date:'MMMM d, y' }}
+        </span>
+      </div>
+      <span class="text-xs uppercase tracking-wider text-gray-500 font-semibold mt-0.5">
+        ORDER DATE
+      </span>
+    </div>
+  </div>
+
+  <div class="hidden md:block h-10 w-px bg-gray-200"></div>
+
+  <!-- Total Price -->
+  <div class="flex items-center justify-between w-full md:w-auto border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
+    <div class="flex flex-col">
+      <div class="text-lg sm:text-xl font-extrabold text-gray-900">
+        ${{ order()?.totalPrice.toFixed(2) }}
+      </div>
+      <span class="text-xs uppercase tracking-wider text-gray-500 font-semibold mt-0.5">
+        TOTAL PRICE
+      </span>
+    </div>
+  </div>
+
+  <!-- Status Badge -->
+  <div class="w-full md:w-auto flex justify-start md:justify-end pt-3 md:pt-0 border-t md:border-t-0 border-gray-100">
+    <div
+      class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#004D2C] text-white text-sm font-semibold shadow-sm">
+      <svg lucideBadgeCheck [size]="16"></svg>
+      {{ order()?.status }}
+    </div>
+  </div>
+
+</div>

@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, input, numberAttribute, output, si
 import { ProductDetailsService } from '../../core/services/product-details.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { HotToastService } from '@ngxpert/hot-toast';
-import {  LucideHouse, LucideMinus, LucidePlus, LucideShoppingCartPlus } from '@lucide/angular';
+import { LucideHouse, LucideMinus, LucidePlus, LucideShoppingCartPlus } from '@lucide/angular';
 import { CartService } from '../../core/services/cart.service';
 import { ProductModel } from '../../core/models/product.model';
 import { ProductCard } from '../../shared/components/product-card/product-card';
@@ -13,23 +13,23 @@ import { ProductCard } from '../../shared/components/product-card/product-card';
   styleUrl: './product-details.css',
   templateUrl: './product-details.html',
 })
-export class ProductDetails   {
+export class ProductDetails {
   // Injections
   productDetailsService = inject(ProductDetailsService);
   cartService = inject(CartService);
   toast = inject(HotToastService);
   route = inject(ActivatedRoute);
 
-  id = input.required({transform : numberAttribute});
+  id = input.required({ transform: numberAttribute });
   prodDetails = signal<ProductModel | null>(null);
-  relatedProds = signal<ProductModel[] | null>(null);
+  relatedProds = signal<ProductModel[]>([]);
   isLoading = signal<boolean>(true);
   hasError = signal<boolean>(false);
   amount = signal<number>(1);
   AddToCart = output<boolean>();
 
   constructor() {
-    effect(()=> {
+    effect(() => {
       this.id();
       this.loadProduct();
       this.loadRelated();
