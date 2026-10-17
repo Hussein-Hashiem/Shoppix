@@ -22,7 +22,6 @@
   padding: 36px 32px;
 }
 
-/* Brand Logo */
 .brand {
   display: flex;
   align-items: center;
@@ -62,7 +61,6 @@
   margin-top: 2px;
 }
 
-/* Title & Subtitle */
 .title {
   font-size: 28px;
   font-weight: 700;
@@ -77,7 +75,6 @@
   margin: 0 0 28px 0;
 }
 
-/* Form Controls */
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -153,7 +150,6 @@
   box-shadow: 0 0 0 3px rgba(0, 90, 54, 0.12);
 }
 
-/* Options (Remember & Forgot) */
 .options-row {
   display: flex;
   align-items: center;
@@ -186,7 +182,6 @@
   text-decoration: underline;
 }
 
-/* Submit Button */
 .submit-btn {
   width: 100%;
   background-color: #005a36;
@@ -219,67 +214,6 @@
   height: 16px;
 }
 
-/* Divider */
-.divider {
-  position: relative;
-  text-align: center;
-  margin: 8px 0;
-}
-
-.divider::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background-color: #e2e8f0;
-}
-
-.divider-text {
-  position: relative;
-  background-color: #ffffff;
-  padding: 0 12px;
-  font-size: 11px;
-  letter-spacing: 0.5px;
-  color: #94a3b8;
-  text-transform: uppercase;
-  font-weight: 600;
-}
-
-/* Social Buttons */
-.social-buttons {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.social-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  background-color: #ffffff;
-  font-size: 14px;
-  font-weight: 500;
-  color: #334155;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.social-btn:hover {
-  background-color: #f8fafc;
-}
-
-.social-icon {
-  width: 18px;
-  height: 18px;
-}
-
-/* Switch Section */
 .switch-section {
   margin-top: 24px;
   text-align: center;
@@ -297,7 +231,6 @@
   text-decoration: underline;
 }
 
-/* Security Badge */
 .security-badge-wrapper {
   margin-top: 18px;
   display: flex;

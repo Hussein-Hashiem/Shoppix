@@ -1,12 +1,12 @@
 import { Component, computed, inject, input, output } from '@angular/core';
 import { ProductModel } from '../../../core/models/product.model';
 import { CommonModule } from '@angular/common';
-import { LucideShoppingCartPlus } from '@lucide/angular';
+import { LucideShoppingCartPlus , LucidePackageX } from '@lucide/angular';
 import { RouterLink } from '@angular/router';
 import { CartService } from '../../../core/services/cart.service';
 
 @Component({
-  imports: [CommonModule, LucideShoppingCartPlus, RouterLink],
+  imports: [CommonModule, LucideShoppingCartPlus, LucidePackageX , RouterLink],
   selector: 'app-product-card',
   styleUrl: './product-card.css',
   templateUrl: './product-card.html',

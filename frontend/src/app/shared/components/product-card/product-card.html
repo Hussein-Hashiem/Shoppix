@@ -17,7 +17,7 @@
     <p class="text-gray-500 text-xs line-clamp-2 leading-relaxed">{{product().description}}</p>
   </div>
 
-  <div class="flex items-center justify-between pt-2 border-t border-gray-50 mt-auto">
+  <div class="flex items-center justify-between child-flex:flex-col pt-2 gap-3 border-t border-gray-50 mt-auto">
     <div>
       <span class="text-gray-400 text-xs block font-medium">Price</span>
       <span class="text-gray-900 font-bold text-lg">{{ product().price | currency:'USD':'symbol':'1.2-2' }}</span>
@@ -25,12 +25,13 @@
 
     <button (click)="onAddToCart(); $event.stopPropagation(); $event.preventDefault()" [disabled]="isOutOfStock()"
       [class.opacity-50]="isOutOfStock()" [aria-label]="isOutOfStock() ? 'Reached Stock Limit': 'Add to cart'"
-      class="flex items-center justify-center gap-2 bg-emerald-800 hover:bg-emerald-900 text-white p-2.5 cursor-pointer rounded-xl transition-colors shadow-md">
+      [title]="isOutOfStock() ? 'Reached Stock Limit': 'Add to cart'"
+      class=" bg-emerald-800 hover:bg-emerald-900 text-white p-2 cursor-pointer rounded-xl transition-colors shadow-md"
+      >
       @if (isOutOfStock()) {
-      <span>Reached Stock Limit</span>
+      <svg lucidePackageX></svg>
       } @else {
       <svg lucideShoppingCartPlus></svg>
-      <span>Add to Cart</span>
       }
     </button>
   </div>

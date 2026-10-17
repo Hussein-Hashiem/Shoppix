@@ -1,8 +1,8 @@
-import { Component, computed, effect, inject, input, OnInit, output, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, numberAttribute, output, signal } from '@angular/core';
 import { ProductDetailsService } from '../../core/services/product-details.service';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { HotToastService } from '@ngxpert/hot-toast';
-import { LucideArrowLeft, LucideArrowRight, LucideHouse, LucideMinus, LucidePlus, LucideShoppingCartPlus } from '@lucide/angular';
+import {  LucideHouse, LucideMinus, LucidePlus, LucideShoppingCartPlus } from '@lucide/angular';
 import { CartService } from '../../core/services/cart.service';
 import { ProductModel } from '../../core/models/product.model';
 import { ProductCard } from '../../shared/components/product-card/product-card';
@@ -13,14 +13,14 @@ import { ProductCard } from '../../shared/components/product-card/product-card';
   styleUrl: './product-details.css',
   templateUrl: './product-details.html',
 })
-export class ProductDetails implements OnInit {
+export class ProductDetails   {
   // Injections
   productDetailsService = inject(ProductDetailsService);
   cartService = inject(CartService);
   toast = inject(HotToastService);
   route = inject(ActivatedRoute);
 
-  id = signal<number>(1);
+  id = input.required({transform : numberAttribute});
   prodDetails = signal<ProductModel | null>(null);
   relatedProds = signal<ProductModel[] | null>(null);
   isLoading = signal<boolean>(true);
@@ -29,20 +29,11 @@ export class ProductDetails implements OnInit {
   AddToCart = output<boolean>();
 
   constructor() {
-    this.route.paramMap.subscribe((params) => {
-      let id = 1;
-      if (params.get('id')) {
-        id = +params.get('id')!;
-      } else {
-        id = 1;
-      }
-      this.id.set(id);
-    }
-    )
-  }
-  ngOnInit() {
-    this.loadProduct();
-    this.loadRelated();
+    effect(()=> {
+      this.id();
+      this.loadProduct();
+      this.loadRelated();
+    });
   }
 
   loadProduct() {
@@ -102,8 +93,6 @@ export class ProductDetails implements OnInit {
   }
 
   changeAmount(am: number) {
-    console.log(this.amount());
-
     this.amount.update((crAm) => {
       return crAm += am;
     })
