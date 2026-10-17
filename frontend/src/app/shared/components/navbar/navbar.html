@@ -22,46 +22,49 @@
 
             @if (cartService.totalCartCount() > 0) {
             <span
-              class="absolute -top-2 -right-2 bg-emerald-800 text-white text-2xs font-bold px-1.5 py-0.5 rounded-full shadow-md ring-2 ring-white" >
+              class="absolute -top-2 -right-2 bg-emerald-800 text-white text-2xs font-bold px-1.5 py-0.5 rounded-full shadow-md ring-2 ring-white">
               {{ cartService.totalCartCount() }}
             </span>
             }
           </a>
         </li>
         <li>
-          <a routerLink="order-history" routerLinkActive="!bg-green-800 !text-white"
-            class="flex items-center md:justify-center gap-2 text-sm font-medium p-2 text-heading bg-white shadow-sm hover:shadow-md hover:-translate-y-0.5 max-md:hover:bg-gray-50 rounded transition-all duration-300">
-            <svg lucideReceiptText></svg>
-            <span class="md:hidden">Orders</span>
-          </a>
-        </li>
-        <li>
           <ul
             class="max-md:mt-2 max-md:pt-2 max-md:border-t max-md:border-default flex flex-col md:flex-row md:items-center md:space-x-3 max-md:space-y-3">
+            @if (authService.isLoggedIn()) {
+            <li>
+              <a routerLink="order-history" routerLinkActive="!bg-green-800 !text-white"
+                class="flex items-center md:justify-center gap-2 text-sm font-medium p-2 text-heading bg-white shadow-sm hover:shadow-md hover:-translate-y-0.5 max-md:hover:bg-gray-50 rounded transition-all duration-300">
+                <svg lucideReceiptText></svg>
+                <span class="md:hidden">Orders</span>
+              </a>
+            </li>
             <li>
               <!-- call logout logic ||| show if JWT exist -->
-              <button
+              <button (click)="logOut()"
                 class="w-full flex md:items-center justify-center gap-2 text-sm font-medium py-2 px-3 text-white bg-emerald-800 shadow-sm hover:shadow-md rounded hover:-translate-y-0.5 transition-all duration-300 cursor-pointer">
                 <svg lucideLogOut></svg>
                 Logout
               </button>
             </li>
+            }@else {
             <li>
               <!-- call sign-in logic ||| show if JWT doesn't exist -->
-              <button
+              <button routerLink="/auth/login"
                 class="w-full flex md:items-center justify-center gap-2 text-sm font-medium py-2 px-3 text-white bg-emerald-800 shadow-sm hover:shadow-md rounded hover:-translate-y-0.5 transition-all duration-300 cursor-pointer">
                 Sign in
               </button>
             </li>
             <li>
               <!-- call register logic -->
-              <button
+              <button routerLink="/auth/register"
                 class="w-full flex md:items-center justify-center gap-2 text-sm font-medium py-2 px-3 text-white bg-emerald-800 shadow-sm hover:shadow-md rounded hover:-translate-y-0.5 transition-all duration-300 cursor-pointer">
                 Register
               </button>
             </li>
-          </ul>
+            }
 
+          </ul>
         </li>
       </ul>
     </div>

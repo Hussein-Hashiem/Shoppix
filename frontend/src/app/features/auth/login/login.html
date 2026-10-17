@@ -1,1 +1,137 @@
-<p>login works!</p>
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <!-- Brand / Logo -->
+    <div class="brand">
+      <div class="brand-icon">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0110 0v4"></path>
+        </svg>
+      </div>
+      <span class="brand-name">Shoppix</span>
+      <span class="brand-dot"></span>
+    </div>
+
+    <!-- Title & Subtitle -->
+    <h1 class="title">Welcome Back</h1>
+    <p class="subtitle">
+      Sign in to your Shoppix account to manage orders, wishlists, and access exclusive drops.
+    </p>
+
+    <!-- Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <div class="input-container">
+          <span class="field-icon">
+            <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </span>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="alex.morgan@example.com"
+            class="form-input"
+          />
+        </div>
+        @let emailControl = loginForm.get('email');
+        @if (emailControl?.invalid && (emailControl?.dirty || emailControl?.touched)) {
+          <div class="error-text" style="margin-top: 6px;">
+            @if (emailControl?.errors?.['required']) {
+              <div>Email is required.</div>
+            }@else if (emailControl?.errors?.['email']) {
+              <div>Please enter a valid email address.</div>
+            }@else if (emailControl?.errors?.['pattern']) {
+              <div>Email contains invalid special characters.</div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <div class="input-container">
+          <span class="field-icon">
+            <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0110 0v4"></path>
+            </svg>
+          </span>
+          <input
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="shoppixSecretKey2024!"
+            class="form-input password-padding"
+          />
+          <button
+            type="button"
+            (click)="togglePasswordVisibility()"
+            class="toggle-password">
+            <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+            </svg>
+          </button>
+        </div>
+        @let passwordControl = loginForm.get('password');
+        @if (passwordControl?.invalid && (passwordControl?.dirty || passwordControl?.touched)) {
+          <div class="error-text" style="margin-top: 6px;">
+            @if (passwordControl?.errors?.['required']) {
+              <div>Password is required.</div>
+            }@else if (passwordControl?.errors?.['minlength']) {
+              <div>Password must be at least 8 characters.</div>
+            }@else if (passwordControl?.errors?.['noUpperCase']) {
+              <div>Must contain at least one uppercase letter.</div>
+            }@else if (passwordControl?.errors?.['noLowerCase']) {
+              <div>Must contain at least one lowercase letter.</div>
+            }@else if (passwordControl?.errors?.['noNumeric']) {
+              <div>Must contain at least one number.</div>
+            }@else if (passwordControl?.errors?.['noSpecialChar']) {
+              <div>Must contain at least one special character.</div>
+            }
+          </div>
+        }
+      </div>
+
+
+      @if (errorMessage()) {
+        <div class="error-text" style="text-align: center; margin-bottom: 12px; font-weight: 400;">
+            {{ errorMessage() }}
+        </div>
+      }
+
+      <!-- Submit Button -->
+      <button type="submit" [disabled]="(loginForm.invalid && loginForm.touched) || isLoading()" class="submit-btn">
+        @if (!isLoading()) {
+          <span>Sign In</span>
+        }
+        @else{
+          <span>Signing in...</span>
+        }
+      </button>
+
+    </form>
+
+    <!-- Bottom Switch Link -->
+    <div class="switch-section">
+      Don't have an account?
+      <a routerLink="/auth/register">Sign up for Shoppix</a>
+    </div>
+
+    <!-- Security Badge -->
+    <div class="security-badge-wrapper">
+      <div class="security-badge">
+        <svg class="security-icon" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z" clip-rule="evenodd"/>
+        </svg>
+        <span>End-to-End Encryption · 256-bit TLS Protected</span>
+      </div>
+    </div>
+
+  </div>
+</div>
