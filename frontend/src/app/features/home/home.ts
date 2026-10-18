@@ -1,15 +1,19 @@
 import { ProductCard } from './../../shared/components/product-card/product-card';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { ProductModel } from '../../core/models/product.model';
-import { LucideMoveRight } from '@lucide/angular';
+import { LucideMoveRight , LucideWifiOff ,LucideServerOff , LucideRefreshCw , LucideTriangleAlert } from '@lucide/angular';
 import { CommonModule } from '@angular/common';
 import { ProductCardSkeleton } from '../../shared/components/product-card-skeleton/product-card-skeleton';
 import { ProductsService } from '../../core/services/products.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { HotToastService } from '@ngxpert/hot-toast';
+import { HttpErrorResponse } from '@angular/common/http';
+import { getApiErrorMessages } from '../../core/utils/error-handling.util';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ErrorState } from '../../core/models/api-error.model';
 
 @Component({
-  imports: [CommonModule, LucideMoveRight, ProductCard, ProductCardSkeleton],
+  imports: [CommonModule,LucideWifiOff, LucideServerOff,LucideRefreshCw ,LucideTriangleAlert  , LucideMoveRight, ProductCard, ProductCardSkeleton],
   selector: 'app-home',
   styleUrl: './home.css',
   templateUrl: './home.html',
@@ -21,6 +25,8 @@ export class Home implements OnInit {
   router = inject(Router);
   route = inject(ActivatedRoute);
   toast = inject(HotToastService);
+  destroyRef = inject(DestroyRef);
+
 
   allproducts = signal<ProductModel[]>([]);
   currentProducts = signal<ProductModel[]>([]);
@@ -32,51 +38,107 @@ export class Home implements OnInit {
   totalPages = signal<number>(1);
   pageSize: number = 12;
 
+  // handel expected errors 
+  errorMessage = signal<string>('');
+  state = signal<ErrorState>('');
+  errorView = computed(() => {
+    switch (this.state()) {
+      case 'OFFLINE':
+        return {
+          title: "You're offline",
+          description: 'Check your Wi-Fi or mobile data, then try again.',
+          tone: 'amber',
+          icon: 'offline'
+        };
+      case 'SERVER':
+        return {
+          title: 'Server is having trouble',
+          description: 'Something went wrong on our side. Please try again in a moment.',
+          tone: 'red',
+          icon: 'server'
+        };
+      default:
+        return {
+          title: 'Something went wrong',
+          description: this.errorMessage() || 'We could not load the products right now.',
+          tone: 'gray',
+          icon: 'warning'
+        };
+    }
+  });
+
+
+
 
   ngOnInit() {
     this.loadProducts();
+    this.route.queryParams
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((params) => this.handlePageParam(params));
   }
 
   loadProducts() {
+    this.hasError.set(false);
+    this.state.set('');
+    this.isLoading.set(true);
     this.productsService.getProducts().subscribe({
       next: (products) => {
         this.allproducts.set(products);
         this.isLoading.set(false);
         this.totalPages.set(this.getPagesCount(products.length));
-
-        this.route.queryParams.subscribe((params) => {
-          const queryPage = parseInt(params['page']);
-          const page = !isNaN(queryPage) && queryPage > 0 ? queryPage : 1;
-          this.currentPage.set(page);
-          if (this.allproducts().length > 0) {
-            this.updateProductsView(page);
-          }
-        })
+        this.handlePageParam(this.route.snapshot.queryParams);
       },
-      error: (error) => {
-        console.error('Error loading products:', error);
+      error: (err: HttpErrorResponse) => {
+        const { errors, status } = getApiErrorMessages(err);
+        if (status === 0 || status === 408) {
+          this.state.set('OFFLINE');
+        } else if (status === 500) {
+          this.state.set('SERVER');
+        }
+        this.errorMessage.set(errors.join('\n'));
         this.isLoading.set(false);
         this.hasError.set(true);
       }
     });
   }
+  handlePageParam(params: Params) {
+    if (this.allproducts().length === 0) return;
+    const queryPage = parseInt(params['page']);
+    let page = 1;
+    if (!isNaN(queryPage) && queryPage > 0) {
+      page = Math.min(queryPage, this.totalPages());
+    }
+    if (params['page'] !== undefined && queryPage !== page) {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { page },
+        queryParamsHandling: 'merge',
+        replaceUrl: true
+      })
+      return;
+    }
+    this.updateProductsView(page);
+  }
+
 
   getPagesCount(productNumber: number): number {
     return Math.ceil(productNumber / this.pageSize);
   }
 
   updateProductsView(page: number): void {
+    if (this.totalPages() < page)
+      return;
     this.currentPage.set(page);
     const startIndex = (page - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.currentProducts.set(this.allproducts().slice(startIndex, endIndex));
   }
 
-  updateCurrentProducts(page : number ):void{
-    this.router.navigate([],{
+  updateCurrentProducts(page: number): void {
+    this.router.navigate([], {
       relativeTo: this.route,
-      queryParams : {page : page},
-      queryParamsHandling : 'merge'
+      queryParams: { page: page },
+      queryParamsHandling: 'merge'
     })
   }
 
@@ -101,10 +163,10 @@ export class Home implements OnInit {
   }
 
   addToCart(isSuccess: boolean): void {
-        if(isSuccess){
-          this.toast.success('Product added to cart successfully!');
-        }else{
-          this.toast.error('Failed to add product to cart. Stock limit reached.');
-        }
+    if (isSuccess) {
+      this.toast.success('Product added to cart successfully!');
+    } else {
+      this.toast.error('Failed to add product to cart. Stock limit reached.');
+    }
   }
 }

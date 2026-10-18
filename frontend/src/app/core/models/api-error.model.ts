@@ -3,3 +3,4 @@ export interface ApiErrorModel {
   status : number;
   errors : Record<string, string[]>
 }
+export type ErrorState = 'OFFLINE' | 'SERVER' | '';

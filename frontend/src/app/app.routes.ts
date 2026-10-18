@@ -15,6 +15,7 @@ export const routes: Routes = [
     path: 'auth',
     canActivate: [authGuard],
     children: [
+      { path: '', redirectTo: 'login', pathMatch: 'full' },
       {
         canDeactivate: [saveChangesGuard],
         path: 'login', loadComponent: () =>

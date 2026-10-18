@@ -11,10 +11,11 @@ import { getApiErrorMessages } from '../../../core/utils/error-handling.util';
 import { finalize, from, Observable, of } from 'rxjs';
 import { canDeactivateComponent } from '../../../core/guards/save-changes-guard';
 import { ConfirmSwal } from '../../../core/utils/swal.config';
+import { LucideEye , LucideEyeClosed , LucideMail , LucideLock } from "@lucide/angular"
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink , LucideEye , LucideEyeClosed , LucideMail , LucideLock ],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
