@@ -1,7 +1,7 @@
 import { ProductCard } from './../../shared/components/product-card/product-card';
 import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { ProductModel } from '../../core/models/product.model';
-import { LucideMoveRight , LucideWifiOff ,LucideServerOff , LucideRefreshCw , LucideTriangleAlert } from '@lucide/angular';
+import { LucideMoveRight, LucideWifiOff, LucideServerOff, LucideRefreshCw, LucideTriangleAlert, LucideInbox } from '@lucide/angular';
 import { CommonModule } from '@angular/common';
 import { ProductCardSkeleton } from '../../shared/components/product-card-skeleton/product-card-skeleton';
 import { ProductsService } from '../../core/services/products.service';
@@ -13,14 +13,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ErrorState } from '../../core/models/api-error.model';
 
 @Component({
-  imports: [CommonModule,LucideWifiOff, LucideServerOff,LucideRefreshCw ,LucideTriangleAlert  , LucideMoveRight, ProductCard, ProductCardSkeleton],
+  imports: [CommonModule, LucideWifiOff, LucideServerOff, LucideRefreshCw, LucideTriangleAlert, LucideMoveRight, ProductCard, ProductCardSkeleton, LucideInbox],
   selector: 'app-home',
   styleUrl: './home.css',
   templateUrl: './home.html',
 })
 export class Home implements OnInit {
   math = Math;
-  // Injections 
+  // Injections
   productsService = inject(ProductsService);
   router = inject(Router);
   route = inject(ActivatedRoute);
@@ -38,7 +38,7 @@ export class Home implements OnInit {
   totalPages = signal<number>(1);
   pageSize: number = 12;
 
-  // handel expected errors 
+  // handel expected errors
   errorMessage = signal<string>('');
   state = signal<ErrorState>('');
   errorView = computed(() => {
