@@ -11,15 +11,10 @@ export class ProductDetailsService {
   http = inject(HttpClient);
 
   getProductById(id: string | number): Observable<ProductModel> {
-    // return this.http.get<ProductModel>(`${this.baseUrl}/${id}`);
-
-    const product = MOCK_PRODUCTS.find(p => +p.id === +id) || MOCK_PRODUCTS[1];
-    return of(product)// .pipe(delay(3000)); // Simulate a 1-second delay for loading
+    return this.http.get<ProductModel>(`${this.baseUrl}/${id}`);
   }
 
   getRelatedProducts(id: string | number): Observable<ProductModel[]> {
-    // return this.http.get<ProductModel[]>(`${this.baseUrl}/${id}/related`);
-
-    return of(MOCK_PRODUCTS.slice(0, 4));
+    return this.http.get<ProductModel[]>(`${this.baseUrl}/${id}/related`);
   }
 }

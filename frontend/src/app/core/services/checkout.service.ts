@@ -25,8 +25,6 @@ export class CheckoutService {
   }
 
   getOrders(): Observable<OrderModel[]> {
-    // return this.httpClient.get<OrderModel[]>(this.baseUrl);
-
-    return of(MOCK_ORDERS);
+    return this.httpClient.get<OrderModel[]>(this.baseUrl);
   }
 }
