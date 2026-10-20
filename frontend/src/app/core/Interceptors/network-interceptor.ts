@@ -1,26 +1,6 @@
-import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import {  HttpInterceptorFn } from '@angular/common/http';
 import { catchError, throwError, timeout } from 'rxjs';
-import { ApiErrorModel } from '../models/api-error.model';
-
-function networkError(
-  status: number,
-  title: string,
-  key: string,
-  message: string
-): HttpErrorResponse {
-  const body: ApiErrorModel = {
-    title,
-    status,
-    errors: { [key]: [message] }
-  };
-  return new HttpErrorResponse({ status, error: body });
-}
-
-const offlineError = () =>
-  networkError(0, 'OFFLINE', 'network.noconnection', 'No Internet, Please Check Your Connection');
-
-const timeoutError = () =>
-  networkError(408, 'TimeOut', 'network.timeOut', 'The request timed out. Please try again');
+import { timeoutError, offlineError } from '../utils/error-handling.util';
 
 export const networkInterceptor: HttpInterceptorFn = (req, next) => {
   // Check if Online
@@ -28,7 +8,7 @@ export const networkInterceptor: HttpInterceptorFn = (req, next) => {
     return throwError(offlineError);
 
     return next(req).pipe(
-    timeout(15000),
+    timeout(20000),
     catchError(err => {
       if (err.name === 'TimeoutError')
         return throwError(timeoutError);

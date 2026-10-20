@@ -6,6 +6,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideLucideIcons } from '@lucide/angular';
 import { provideHotToastConfig } from '@ngxpert/hot-toast';
 import { networkInterceptor } from './core/Interceptors/network-interceptor';
+import { authInterceptor } from './core/Interceptors/auth-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,7 +17,7 @@ export const appConfig: ApplicationConfig = {
         anchorScrolling : 'enabled'
       }
     )),
-    provideHttpClient(withInterceptors([networkInterceptor])), 
+    provideHttpClient(withInterceptors([networkInterceptor , authInterceptor])), 
     provideLucideIcons(),
     provideHotToastConfig({
       position: 'top-center',
