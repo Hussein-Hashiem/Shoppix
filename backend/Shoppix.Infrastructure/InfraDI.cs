@@ -11,6 +11,8 @@ public static class InfraDI
             => options.UseSqlServer(configuration.GetConnectionString("defaultConnection")));
 
         services.AddScoped<IAppDbContext, AppDbContext>();
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IFileService, CloudinaryFileService>();
 
         services.AddSingleton<IJwtService, JwtService>();
