@@ -57,7 +57,7 @@ export class Login implements canDeactivateComponent{
             finalize(()=>this.isLoading.set(false))
     ).subscribe({
       next: (response) => {
-        this.authService.handleLoginSuccess(response.token);
+        this.authService.handleLoginSuccess(response.token , response.refreshToken , response.refreshTokenExpiration);
         this.loginForm.reset();
         this.toastService.success('User logged in successfully');
         this.router.navigate(['/home']);
