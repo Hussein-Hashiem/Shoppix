@@ -9,4 +9,7 @@ class ApiEndpoints {
 
   // products
   static const String allProducts = '/products';
+
+  //product by id
+  static String getProductById(int id)=>'products/$id';
 }

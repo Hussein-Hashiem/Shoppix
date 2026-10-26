@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/core/utils/constants/colors.dart';
 import 'package:mobile/core/utils/constants/icon_assets.dart';
-import 'package:mobile/core/utils/constants/style.dart';
 import 'package:mobile/core/utils/responsive/responsive.dart';
 import 'package:mobile/core/utils/validators/validators.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/register_viewmodel.dart/register_cubit.dart';

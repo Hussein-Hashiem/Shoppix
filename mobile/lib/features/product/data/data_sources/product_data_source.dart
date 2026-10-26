@@ -27,4 +27,18 @@ class ProductDataSource {
       rethrow;
     }
   }
+
+  Future<ProductModel> getProductById({required int id}) async {
+    try {
+      final response = await apiClient.get(
+        ApiEndpoints.baseUrl + ApiEndpoints.getProductById(id),
+      );
+      final product=response.data;
+      return ProductModel.fromJson(product as Map<String,dynamic>);
+    }on ServerException catch (_) {
+      rethrow;
+    }on NetworkException catch(_){
+      rethrow;
+    }
+  }
 }

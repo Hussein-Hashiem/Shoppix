@@ -42,8 +42,18 @@ class ProductRepoImpl implements ProductRepo {
   }
 
   @override
-  Future<Either<Failure, ProductEntity>> getProductById({required int id}) {
-    // TODO: implement getProductById
-    throw UnimplementedError();
+  Future<Either<Failure, ProductEntity>> getProductById({required int id})async {
+    try {
+      final ProductEntity response = await productDataSource.getProductById(id: id);
+      return right(response);
+    } on ServerException catch (e) {
+      final ExceptionHandler handler = ExceptionHandler();
+      return left(handler.handleException(e));
+    } on NetworkException catch (e) {
+      final ExceptionHandler handler = ExceptionHandler();
+      return left(handler.handleException(e));
+    }
   }
+
+ 
 }

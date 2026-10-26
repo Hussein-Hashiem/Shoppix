@@ -1,7 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/core/errors/exception.dart';
 import 'package:mobile/core/network/api_client.dart';
 import 'package:mobile/core/utils/constants/endpoints.dart';
+import 'package:mobile/core/utils/responsive/responsive.dart';
 import 'package:mobile/features/product/data/data_sources/product_data_source.dart';
 import 'package:mobile/features/product/data/models/product_model.dart';
 import 'package:mocktail/mocktail.dart';
@@ -78,7 +80,14 @@ void main() {
             ApiEndpoints.baseUrl + ApiEndpoints.allProducts,
             token: "1234567",
           ),
-        ).thenAnswer((_) async => response);
+        ).thenAnswer(
+          (_) async => Response(
+            requestOptions: RequestOptions(
+              path: ApiEndpoints.baseUrl + ApiEndpoints.allProducts,
+            ),
+            data: response,
+          ),
+        );
 
         final result = await productDataSource.getAllProducts(token: "1234567");
 
