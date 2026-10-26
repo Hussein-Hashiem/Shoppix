@@ -9,10 +9,13 @@ class ExceptionHandler {
     if (e is NetworkException) {
       return handleNetworkException(e);
     }
+    if (e is CacheException) {
+      return handleCacheException(e);
+    }
     return const UnexpectedFailure('Unexpected error occurred');
   }
 
-  ServerFailure handleServerException(ServerException exception) {
+  Failure handleServerException(ServerException exception) {
     switch (exception.statusCode) {
       // Client errors
       case 400:
@@ -31,7 +34,7 @@ class ExceptionHandler {
         );
 
       case 404:
-        return ServerFailure('The requested information could not be found.');
+        return NotFoundFailure('The requested information could not be found.');
 
       case 408:
         return ServerFailure('The request took too long. Please try again.');
@@ -69,4 +72,8 @@ class ExceptionHandler {
   NetworkFailure handleNetworkException(NetworkException exception) {
     return NetworkFailure(exception.message);
   }
+  CacheFailure handleCacheException(CacheException exception){
+    return CacheFailure(exception.message);
+  }
+
 }

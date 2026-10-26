@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/auth/domain/usecases/register_usecase.dart';
-import 'package:mobile/features/auth/presentation/viewmodel/login_viewmodel/login_states.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/register_viewmodel.dart/register_states.dart';
 
 class RegisterCubit extends Cubit<RegisterState> {

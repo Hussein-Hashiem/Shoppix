@@ -6,12 +6,13 @@ import 'package:mobile/core/utils/responsive/responsive.dart';
 import 'package:mobile/core/utils/theme/app_theme.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/login_viewmodel/login_cubit.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/register_viewmodel.dart/register_cubit.dart';
+import 'package:mobile/features/cart/presentation/viewmodel/cart_cubit.dart';
 import 'package:mobile/features/product/presentation/viewmodel/get_all_products_cubit/get_all_products_cubit.dart';
 
-void main() {
+void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   Responsive.initFromView();
-  setup();
+  await setup();
 
   runApp(
     MultiBlocProvider(
@@ -19,6 +20,7 @@ void main() {
         BlocProvider(create: (context) => sl<LoginCubit>()),
         BlocProvider(create: (context) => sl<RegisterCubit>()),
         BlocProvider(create: (context) => sl<GetAllProductsCubit>()),
+        BlocProvider(create: (context)=>sl<CartCubit>()),
       ],
       child: const MyApp(),
     ),

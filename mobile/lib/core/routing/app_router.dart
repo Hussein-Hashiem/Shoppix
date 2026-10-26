@@ -2,10 +2,11 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile/core/routing/routes.dart';
 import 'package:mobile/features/auth/presentation/screens/login_screens/login_screen.dart';
 import 'package:mobile/features/auth/presentation/screens/register_screens/register_screen.dart';
+import 'package:mobile/features/cart/presentation/screens/cart_screen.dart';
 import 'package:mobile/features/product/presentation/screens/browse_products_screens/browse_products_screen.dart';
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: '/login',
+  initialLocation: Routes.cart,
   routes: [
     GoRoute(
       path: Routes.login,
@@ -21,6 +22,11 @@ final GoRouter appRouter = GoRouter(
       path: Routes.browseProducts,
       name: Routes.browseProducts,
       builder: (context, state) => const BrowseProductsScreen(),
+    ),
+    GoRoute(
+      path: Routes.cart,
+      name: Routes.cart,
+      builder: (context, state) => const CartScreen(),
     ),
   ],
 );

@@ -38,7 +38,7 @@ dependencies:
   equatable: ^3.0.0
   dartz: ^0.10.1
   get_it: ^9.3.0
-  shared_preferences: ^2.5.5
+  shared_preferences: ^2.5.6
   internet_connection_checker_plus: ^3.1.2
   mocktail: ^1.0.5
   flutter_secure_storage: ^11.2.0
