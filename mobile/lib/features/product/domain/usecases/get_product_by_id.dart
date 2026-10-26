@@ -9,18 +9,16 @@ class GetProductByIdUsecase implements UseCase<ProductEntity, ProductParams> {
   final ProductRepo productRepo;
   GetProductByIdUsecase(this.productRepo);
   @override
-  Future<Either<Failure, ProductEntity>> call(ProductParams params) {
-    // TODO: implement call
-    throw UnimplementedError();
+  Future<Either<Failure, ProductEntity>> call(ProductParams params)async {
+    return await productRepo.getProductById(id: params.id);
   }
 }
 
 class ProductParams extends Equatable {
   final int id;
 
-  ProductParams({required this.id});
+  const ProductParams({required this.id});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [id];
 }

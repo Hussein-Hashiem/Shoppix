@@ -50,10 +50,16 @@ class BrowseProductsScreen extends StatelessWidget {
                     }
                   }
                 },
-                builder: (context, state) {
-                  if (state is LoadingGetAllProductState) {
-                    return Center(child: CircularProgressIndicator());
+                
+builder: (context, state) {
+                  if (state is InitialGetAllProductState) {
+                    return const Center(child: Text('Preparing products...'));
                   }
+
+                  if (state is LoadingGetAllProductState) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
                   if (state is FailGetAllProductState) {
                     return Center(
                       child: Text(
@@ -62,10 +68,14 @@ class BrowseProductsScreen extends StatelessWidget {
                       ),
                     );
                   }
-                  return ProductsList(
-                    products: (state as SuccessGetAllProductState).products,
-                  );
+
+                  if (state is SuccessGetAllProductState) {
+                    return ProductsList(products: state.products);
+                  }
+
+                  return const SizedBox.shrink();
                 },
+
               ),
             ],
           ),

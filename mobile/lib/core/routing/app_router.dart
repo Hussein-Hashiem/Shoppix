@@ -4,6 +4,7 @@ import 'package:mobile/features/auth/presentation/screens/login_screens/login_sc
 import 'package:mobile/features/auth/presentation/screens/register_screens/register_screen.dart';
 import 'package:mobile/features/cart/presentation/screens/cart_screen.dart';
 import 'package:mobile/features/product/presentation/screens/browse_products_screens/browse_products_screen.dart';
+import 'package:mobile/features/product/presentation/screens/product_details_screen/product_details_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: Routes.cart,
@@ -27,6 +28,15 @@ final GoRouter appRouter = GoRouter(
       path: Routes.cart,
       name: Routes.cart,
       builder: (context, state) => const CartScreen(),
+    ),
+    GoRoute(
+      path: Routes.productDetails,
+      name: Routes.productDetails,
+      builder: (context, state) {
+        final productId = int.parse(state.pathParameters['id']!);
+
+        return ProductDetailsScreen(productId: productId);
+      },
     ),
   ],
 );
