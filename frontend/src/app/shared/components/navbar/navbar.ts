@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import {  Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { LucideLogOut, LucideMenu, LucideReceiptText, LucideShoppingBag } from '@lucide/angular';
 import { CartService } from '../../../core/services/cart.service';
 import { AuthService } from '../../../core/services/auth.service';
@@ -15,6 +15,7 @@ export class Navbar {
   // Injections
   cartService = inject(CartService);
   authService = inject(AuthService);
+  router = inject(Router);
 
   async logOut(){
       const logOutAlert = await  ConfirmSwal.fire({

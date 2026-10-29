@@ -60,7 +60,9 @@ export class Cart {
       this.confirmCheckout();
     } else {
       this.toastService.error('Please login first');
-      this.router.navigate(['/auth/login']);
+      this.router.navigate(['/auth/login'], {
+        queryParams: { returnUrl: '/cart' }
+      });
     }
   }
 
@@ -79,7 +81,7 @@ export class Cart {
         next: () => {
           this.toastService.success('Order placed successfully.');
           this.router.navigate(['/order-history']);
-          localStorage.removeItem('cart');
+          this.cartService.clearCart();
         },
         error: () => {
           ConfirmSwal.fire({

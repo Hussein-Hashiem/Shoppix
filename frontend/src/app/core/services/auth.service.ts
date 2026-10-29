@@ -27,6 +27,7 @@ export class AuthService {
     localStorage.setItem('refreshToken', refreshToken);
     localStorage.setItem('refreshTokenExpiration', refreshTokenExpiration);
     this.refreshToken.set(refreshToken);
+    this.refreshTokenExpiration.set(refreshTokenExpiration);
   }
   register(data: RegisterRequest): Observable<RegisterResponse> {
     return this.http.post<RegisterResponse>(`${this.baseUrl}/register`, data);
@@ -41,6 +42,7 @@ export class AuthService {
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('refreshTokenExpiration');
     this.refreshToken.set(null);
+    this.refreshTokenExpiration.set(null);
   }
 
   refreshTokens(credentials :refreshTokenCredentials): Observable<LoginResponse> {
