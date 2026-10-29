@@ -81,8 +81,7 @@ export class Cart {
         next: () => {
           this.toastService.success('Order placed successfully.');
           this.router.navigate(['/order-history']);
-          localStorage.removeItem('cart');
-          this.cartService.cartItems.set([]);
+          this.cartService.clearCart();
         },
         error: () => {
           ConfirmSwal.fire({
