@@ -1,3 +1,15 @@
+
+
+
+@if (isLoading()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-[#F0F2F5]">
+    <div class="text-center">
+      <h2 class="text-[#166534] font-bold text-2xl mb-3">Shopix</h2>
+      <div class="w-10 h-10 border-4 border-[#81C784] border-t-[#166534] rounded-full animate-spin mx-auto"></div>
+    </div>
+  </div>
+}
+
 <app-navbar />
 <router-outlet />
 <app-footer />
