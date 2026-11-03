@@ -26,9 +26,45 @@ Shoppix/
 
 ## Database
 
-The database runs on SQL Server. The ERD is available at [`docs/erd.png`](docs/erd.png).
+The database runs on SQL Server.
 
-![ERD](docs/erd.png)
+
+```mermaid
+erDiagram
+    USER ||--o{ ORDER : places
+    ORDER ||--|{ ORDER_ITEM : contains
+    PRODUCT ||--o{ ORDER_ITEM : "ordered in"
+
+    USER {
+        int Id
+        string Name
+        string Email
+        string PasswordHash
+    }
+    PRODUCT {
+        int Id
+        string Name
+        string Description
+        decimal Price
+        int Stock
+    }
+    ORDER {
+        int Id
+        int UserId
+        datetime OrderDate
+        decimal TotalPrice
+        string Status
+    }
+    ORDER_ITEM {
+        int Id
+        int OrderId
+        int ProductId
+        int Quantity
+        decimal UnitPrice
+    }
+```
+
+`Order.Status`: `"Pending"` → `"Confirmed"` (set immediately on checkout — there's no payment step to wait for).
 
 ## Getting Started
 
@@ -78,6 +114,7 @@ TODO: add setup instructions once the stack is decided.
 | Ali | Mobile |
 | Mariam | AI |
 
+
 ## Branching
 
-Work happens on task branches created from the develop branch of your area (`front-develop`, `back-develop`, `mobile-develop`, `ai-develop`). The team leader merges the develop branches into `main` at the end of each sprint. See [CONTRIBUTING.md](CONTRIBUTING.md) for details and read it before you start working.
+Work happens on task branches created from the develop branch of your area (`front-develop`, `back-develop`, `mobile-develop`, `ai-develop`). At the end of each sprint, each track lead merges their develop branch into `main`, with the team leader's approval. See [CONTRIBUTING.md](CONTRIBUTING.md) for details and read it before you start working.
