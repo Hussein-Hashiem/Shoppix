@@ -1,4 +1,4 @@
-﻿using Shoppix.Application.Features.Products.Dtos;
+using Shoppix.Application.Features.Products.Dtos;
 using Shoppix.Application.Features.Products.Queries.GetRelatedProducts;
 
 namespace Shoppix.API.Controllers
