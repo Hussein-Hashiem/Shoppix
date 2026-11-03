@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+@import "flowbite/src/themes/default";
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
+
+@import 'tailwindcss';
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+.error-text {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+}

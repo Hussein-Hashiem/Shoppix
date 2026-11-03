@@ -1,0 +1,177 @@
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <!-- Brand / Logo -->
+    <div class="brand">
+      <div class="brand-icon">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0110 0v4"></path>
+        </svg>
+      </div>
+      <span class="brand-name">Shoppix</span>
+      <span class="brand-dot"></span>
+    </div>
+
+    <!-- Title & Subtitle -->
+    <h1 class="title">Create Account</h1>
+    <p class="subtitle">
+      Join Shoppix today to unlock tailored recommendations, track orders, and discover new drops.
+    </p>
+
+    <!-- Form -->
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form">
+
+      <!-- Full Name -->
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <div class="input-container">
+          <span class="field-icon">
+            <svg lucideUser></svg>
+          </span>
+          <input type="text" formControlName="name" placeholder="Alex Morgan" class="form-input" />
+        </div>
+        @let nameControl = registerForm.get('name');
+        @if (nameControl?.invalid && (nameControl?.dirty || nameControl?.touched)) {
+        <div class="error-text" style="margin-top: 6px;">
+          @if (nameControl?.errors?.['required']) {
+          <div>Name is required.</div>
+          }@else if (nameControl?.errors?.['blank']) {
+          <div>Name must not be empty.</div>
+          }
+          @else if (nameControl?.errors?.['minlength']) {
+          <div>Name must be at least 3 characters.</div>
+          }
+          @else if (nameControl?.errors?.['maxlength']) {
+          <div>Name must be at most 50 characters.</div>
+          }
+        </div>
+        }
+      </div>
+
+      <!-- Email Address -->
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <div class="input-container">
+          <span class="field-icon">
+            <svg lucideMail></svg>
+          </span>
+          <input type="email" formControlName="email" placeholder="alex.morgan@example.com" class="form-input" />
+        </div>
+        @let emailControl = registerForm.get('email');
+        @if (emailControl?.invalid && (emailControl?.dirty || emailControl?.touched)) {
+        <div class="error-text" style="margin-top: 6px;">
+          @if (emailControl?.errors?.['required']) {
+          <div>Email is required.</div>
+          }
+          @else if (emailControl?.errors?.['email']) {
+          <div>Not valid email format.</div>
+          }@else if (emailControl?.errors?.['pattern']) {
+              <div>Email contains invalid special characters.</div>
+          }
+        </div>
+        }
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <div class="input-container">
+          <span class="field-icon">
+            <svg lucideLock></svg>
+          </span>
+          <input [type]="showPassword() ? 'text' : 'password'" formControlName="password"
+            placeholder="Create a strong password" class="form-input password-padding" />
+          <button type="button" (click)="togglePasswordVisibility()" class="toggle-password">
+            @if(showPassword()){
+                <svg lucideEye></svg>
+            }@else {
+                <svg lucideEyeClosed></svg>
+            }
+          </button>
+        </div>
+        @let passwordControl = registerForm.get('password');
+        @if (passwordControl?.invalid && (passwordControl?.dirty || passwordControl?.touched)) {
+        <div class="error-text" style="margin-top: 6px;">
+          @if (passwordControl?.errors?.['required']) {
+          <div>Password is Required.</div>
+          }
+          @else if (passwordControl?.errors?.['minlength']) {
+          <div>Password must be at least 8 characters.</div>
+          }
+          @else if (passwordControl?.errors?.['noUpperCase']) {
+          <div>Must contain at least one uppercase letter.</div>
+          }
+          @else if (passwordControl?.errors?.['noLowerCase']) {
+          <div>Must contain at least one lowercase letter.</div>
+          }
+          @else if (passwordControl?.errors?.['noNumeric']) {
+          <div>Must contain at least one number.</div>
+          }@else if (passwordControl?.errors?.['noSpecialChar']) {
+          <div>Must contain at least one special character.</div>
+          }
+        </div>
+        }
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="form-group">
+        <label class="form-label">Confirm Password</label>
+        <div class="input-container">
+          <span class="field-icon">
+            <svg lucideLock></svg>
+          </span>
+          <input [type]="showConfirmPassword() ? 'text' : 'password'" formControlName="confirmPassword"
+            placeholder="Re-enter your password" class="form-input password-padding" />
+          <button type="button" (click)="toggleConfirmPasswordVisibility()" class="toggle-password">
+            @if(showConfirmPassword()){
+                <svg lucideEye></svg>
+            }@else {
+                <svg lucideEyeClosed></svg>
+            }
+          </button>
+        </div>
+        @if (registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched) {
+        <span class="error-text">
+          Passwords do not match
+        </span>
+        }
+      </div>
+
+
+      @if (errorMessage()) {
+      <div class="error-text" style="text-align: center; margin-bottom: 12px; font-weight: 500;">
+        {{ errorMessage() }}
+      </div>
+      }
+
+      <button type="submit" [disabled]="(registerForm.invalid && registerForm.touched)" class="submit-btn">
+        @if (!isLoading()) {
+        <span>Create Account</span>
+        }@else{
+        <span>Creating account...</span>
+        }
+      </button>
+
+      <!-- Divider -->
+      <div class="divider">
+        <span class="divider-text">Or continue with</span>
+      </div>
+    </form>
+
+    <!-- Bottom Switch Link -->
+    <div class="switch-section">
+      Already have an account?
+      <a routerLink="/auth/login">Sign in</a>
+    </div>
+
+    <!-- Security Badge -->
+    <div class="security-badge-wrapper">
+      <div class="security-badge">
+        <svg lucideShieldCheck ></svg>
+        <span>End-to-End Encryption · 256-bit TLS Protected</span>
+      </div>
+    </div>
+
+  </div>
+</div>
