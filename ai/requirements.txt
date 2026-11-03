@@ -1,5 +1,5 @@
 fastapi
+uvicorn
 httpx
 scikit-learn
 numpy
-uvicorn
