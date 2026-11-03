@@ -59,6 +59,15 @@ public static class InfraDI
 
         services.Configure<CloudinarySettings>(configuration.GetSection(CloudinarySettings.Name));
 
+        services.Configure<AIServiceSettings>(configuration.GetSection(AIServiceSettings.Name));
+
+        services.AddHttpClient<IRelatedProductsClientService, RelatedProductsClientService>((sp, client) =>
+        {
+            var options = sp.GetRequiredService<IOptions<AIServiceSettings>>().Value;
+            client.BaseAddress = new Uri(options.BaseUrl.TrimEnd('/') + "/");
+            client.Timeout = TimeSpan.FromSeconds(options.TimeoutSeconds);
+        });
+
         return services;
     }
 }
