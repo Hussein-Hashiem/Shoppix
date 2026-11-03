@@ -1,4 +1,7 @@
-﻿namespace Shoppix.API.Controllers
+using Shoppix.Application.Features.Products.Dtos;
+using Shoppix.Application.Features.Products.Queries.GetRelatedProducts;
+
+namespace Shoppix.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -20,6 +23,14 @@
         {
             var result = await mediator.Send(new GetProductByIdQuery(id), cancellationToken);
 
+            return result.IsSuccess ? Ok(result.Value) : result.ToProblem();
+        }
+
+        [HttpGet("{id:int}/related")]
+        [ProducesResponseType(typeof(IReadOnlyList<RelatedProductDto>), StatusCodes.Status200OK)]
+        public async Task<ActionResult> GetRelated(int id, [FromQuery] int limit = 4, CancellationToken cancellationToken = default)
+        {
+            var result = await mediator.Send(new GetRelatedProductsQuery(id, limit), cancellationToken);
             return result.IsSuccess ? Ok(result.Value) : result.ToProblem();
         }
 
