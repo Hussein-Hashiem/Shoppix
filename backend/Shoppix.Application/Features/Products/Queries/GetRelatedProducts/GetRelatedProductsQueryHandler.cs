@@ -24,17 +24,19 @@ public class GetRelatedProductsQueryHandler(
             return Result.Success(empty);
         }
 
-        if (related.Count == 0)
+        var relevant = related.Where(r => r.Score >= 0.02).ToList();
+
+        if (relevant.Count == 0)
             return Result.Success(empty);
 
-        var ids = related.Select(r => r.Id).ToList();
+        var ids = relevant.Select(r => r.Id).ToList();
 
         var products = await _db.Products
             .AsNoTracking()
             .Where(p => ids.Contains(p.Id) && p.StockQuantity > 0)
             .ToListAsync(ct);
 
-        var scores = related.ToDictionary(r => r.Id, r => r.Score);
+        var scores = relevant.ToDictionary(r => r.Id, r => r.Score);
 
         IReadOnlyList<RelatedProductDto> dtos = products
             .OrderByDescending(p => scores[p.Id])
