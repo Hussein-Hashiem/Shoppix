@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Shoppix.API/Shoppix.API.csproj" Id="a8c7106a-d83a-46ad-b4f9-2cff05eb7f5f" />
+  <Project Path="Shoppix.Application/Shoppix.Application.csproj" Id="2d55a34f-540b-4656-a52f-64348154a030" />
+  <Project Path="Shoppix.Domain/Shoppix.Domain.csproj" Id="122cf455-3405-43dd-96c3-03c47fa1f256" />
+  <Project Path="Shoppix.Infrastructure/Shoppix.Infrastructure.csproj" Id="7ed2301c-4634-4fcc-8667-a5862cb1b520" />
+</Solution>
