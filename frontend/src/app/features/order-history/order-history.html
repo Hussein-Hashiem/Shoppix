@@ -1,0 +1,104 @@
+<div class="min-h-screen container mx-auto px-4 sm:px-6 lg:px-12 py-8 font-sans">
+
+  <!-- Breadcrumb -->
+  <div class="flex mb-8" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+      <li class="inline-flex items-center">
+        <a routerLink="/home"
+          class="inline-flex items-center gap-1.5 text-sm font-medium text-body hover:text-emerald-800">
+          <svg lucideHouse [size]="16"></svg>
+          Home
+        </a>
+      </li>
+      <li aria-current="page">
+        <div class="flex items-center space-x-1.5">
+          <span class="text-sm text-neutral-400">/</span>
+          <span class="inline-flex items-center text-sm font-medium text-body-subtle">Order History</span>
+        </div>
+      </li>
+    </ol>
+  </div>
+
+  <!-- Page Title & Description -->
+  <div class="mb-8">
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-[#111827] tracking-tight mb-2">
+      Order History
+    </h1>
+    <p class="text-gray-600 text-sm sm:text-base max-w-2xl">
+      Review your verified accepted orders, order dates, total amounts, and fulfillment statuses directly synced with
+      the order service.
+    </p>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+  <div class="grid gap-y-4">
+    @for (sk of [1, 2, 3, 4]; track sk) {
+    <app-order-card-skeleton></app-order-card-skeleton>
+    }
+  </div>
+  }
+
+  <!-- Error State -->
+  @else if (hasError()) {
+  <div
+    class="py-16 px-6 flex flex-col items-center justify-center text-center max-w-md mx-auto my-6 bg-gray-50/60 rounded-3xl border border-gray-100">
+
+    <!-- Icon -->
+    <div class="w-20 h-20 rounded-full flex items-center justify-center mb-6"
+      [class.bg-amber-50]="errorView().tone === 'amber'" [class.text-amber-600]="errorView().tone === 'amber'"
+      [class.bg-red-50]="errorView().tone === 'red'" [class.text-red-500]="errorView().tone === 'red'"
+      [class.bg-gray-100]="errorView().tone === 'gray'" [class.text-gray-500]="errorView().tone === 'gray'">
+
+      @switch (errorView().icon) {
+      @case ('offline') {
+      <svg lucideWifiOff></svg>
+      }
+      @case ('server') {
+      <svg lucideServerOff></svg>
+      }
+      @default {
+      <svg lucideTriangleAlert></svg>
+      }
+      }
+    </div>
+    <h3 class="text-gray-900 font-bold text-xl tracking-tight mb-2">{{ errorView().title }}</h3>
+    <p class="text-gray-500 text-sm leading-relaxed mb-8 max-w-xs">{{ errorView().description }}</p>
+
+    <button (click)="loadOrders()"
+      class="inline-flex items-center justify-center gap-2 bg-emerald-800 hover:bg-emerald-900 text-white font-medium text-sm px-6 py-3 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer">
+      <svg lucideRefreshCw></svg>
+      <span>Try Again</span>
+    </button>
+  </div>
+  }
+
+  <!-- Empty State -->
+  @else if (ordersList().length === 0 && !isLoading()) {
+  <div
+    class="py-20 px-6 flex flex-col items-center justify-center text-center max-w-md mx-auto my-6 bg-gray-50/60 rounded-3xl border border-gray-100">
+    <div
+      class="w-16 h-16 bg-emerald-50 text-emerald-800 rounded-2xl flex items-center justify-center mb-5 shadow-inner">
+      <svg lucideClipboardCheck></svg>
+    </div>
+    <h3 class="text-gray-900 font-bold text-xl tracking-tight mb-2">No Orders Found</h3>
+    <p class="text-gray-500 text-sm leading-relaxed mb-6">
+      You haven't placed any orders yet. Once you complete a purchase, your order details will appear here.
+    </p>
+    <a routerLink="/home"
+      class="inline-flex items-center justify-center gap-2 bg-emerald-800 hover:bg-emerald-900 text-white font-medium text-sm px-6 py-3 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer">
+      Start Shopping
+    </a>
+  </div>
+  }
+
+  <!-- Success State (Orders List) -->
+  @else {
+  <div class="grid gap-y-4">
+    @for (order of ordersList(); track order.id) {
+    <app-order-card [order]="order"></app-order-card>
+    }
+  </div>
+  }
+
+</div>
