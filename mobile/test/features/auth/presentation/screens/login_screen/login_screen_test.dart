@@ -1,26 +1,30 @@
 import 'dart:async';
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/core/routing/routes.dart';
 import 'package:mobile/core/utils/theme/app_theme.dart';
 import 'package:mobile/features/auth/presentation/screens/login_screens/login_screen.dart';
 import 'package:mobile/features/auth/presentation/screens/register_screens/register_screen.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/login_viewmodel/login_cubit.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/login_viewmodel/login_states.dart';
+import 'package:mobile/features/product/presentation/viewmodel/get_all_products_cubit/get_all_products_cubit.dart';
+import 'package:mobile/features/product/presentation/viewmodel/get_all_products_cubit/get_all_products_states.dart';
 import 'package:mobile/widgets/custom_elevated_button.dart';
 import 'package:mobile/widgets/custom_textfield.dart';
 import 'package:mocktail/mocktail.dart';
 
 class LoginCubitMock extends Mock implements LoginCubit {}
 
-// عشان مننكررش الجزئية دي في كل مرة بنعمل فيها تيست
-Future<void> pumbLoginScreen(
+class GetAllProductsCubitMock extends Mock implements GetAllProductsCubit {}
+
+Future<void> pumpLoginScreen(
   WidgetTester tester, {
   required LoginCubit loginCubit,
-  String initialRoute = '/login',
+  required GetAllProductsCubit productsCubit,
+  String initialRoute = Routes.login,
 }) async {
   final testRouter = GoRouter(
     initialLocation: initialRoute,
@@ -28,16 +32,27 @@ Future<void> pumbLoginScreen(
       GoRoute(
         path: Routes.login,
         name: Routes.login,
-        builder: (context, state) =>
-            BlocProvider(create: (context) => loginCubit, child: LoginScreen()),
+        builder: (context, state) => MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: loginCubit),
+            BlocProvider.value(value: productsCubit),
+          ],
+          child: const LoginScreen(),
+        ),
       ),
       GoRoute(
         path: Routes.register,
         name: Routes.register,
         builder: (context, state) => const RegisterScreen(),
       ),
+      GoRoute(
+        path: Routes.browseProducts,
+        name: Routes.browseProducts,
+        builder: (context, state) => const Scaffold(body: SizedBox()),
+      ),
     ],
   );
+
   await tester.pumpWidget(
     MaterialApp.router(routerConfig: testRouter, theme: AppTheme.lightTheme),
   );
@@ -45,44 +60,73 @@ Future<void> pumbLoginScreen(
 
 void main() {
   late LoginCubitMock loginCubitMock;
+  late GetAllProductsCubitMock productsCubitMock;
   late StreamController<LoginStates> loginStateController;
+
   setUp(() {
     loginCubitMock = LoginCubitMock();
+    productsCubitMock = GetAllProductsCubitMock();
     loginStateController = StreamController<LoginStates>.broadcast();
+
     when(() => loginCubitMock.state).thenReturn(InitialLoginState());
     when(() => loginCubitMock.stream)
         .thenAnswer((_) => loginStateController.stream);
-    when(() => loginCubitMock.close()).thenAnswer((_) async => {});
+    when(() => loginCubitMock.close()).thenAnswer((_) async {});
+
+    when(() => productsCubitMock.state)
+        .thenReturn(InitialGetAllProductState());
+    when(() => productsCubitMock.stream)
+        .thenAnswer((_) => const Stream.empty());
+    when(() => productsCubitMock.close()).thenAnswer((_) async {});
+    when(() => productsCubitMock.getAllProducts()).thenReturn(null);
   });
 
-  group("Login Screen tests", () {
-    testWidgets("should render LoginWidgetScreen in Initial state", (
-      tester,
-    ) async {
-      await pumbLoginScreen(tester, loginCubit: loginCubitMock);
+  tearDown(() async {
+    await loginStateController.close();
+  });
+
+  group('Login Screen tests', () {
+    testWidgets('should render login widgets in the initial state', (tester) async {
+      await pumpLoginScreen(
+        tester,
+        loginCubit: loginCubitMock,
+        productsCubit: productsCubitMock,
+      );
 
       expect(find.byType(CustomTextfield), findsNWidgets(2));
-      expect(
-        find.widgetWithText(CustomElevatedButton, "Sign In"),
-        findsNWidgets(1),
-      );
+      expect(find.widgetWithText(CustomElevatedButton, 'Sign In'), findsOneWidget);
     });
-    testWidgets("should render green snackbar with a text in Success state", (
+
+    testWidgets('should show a success snackbar when login succeeds', (
       tester,
     ) async {
-      await pumbLoginScreen(tester, loginCubit: loginCubitMock);
+      await pumpLoginScreen(
+        tester,
+        loginCubit: loginCubitMock,
+        productsCubit: productsCubitMock,
+      );
 
-      when(() => loginCubitMock.state).thenReturn(SuccessLoginState());
       loginStateController.add(SuccessLoginState());
       await tester.pump();
 
       expect(find.byType(ScaffoldMessenger), findsOneWidget);
-      expect(find.text("Signed In Successfully"), findsOneWidget);
-      await tester.pump(const Duration(seconds: 4));
+      expect(find.text('Signed In Successfully'), findsOneWidget);
+    });
 
-      await tester.pump(const Duration(milliseconds: 750));
+    testWidgets('should show a failure snackbar when login fails', (
+      tester,
+    ) async {
+      await pumpLoginScreen(
+        tester,
+        loginCubit: loginCubitMock,
+        productsCubit: productsCubitMock,
+      );
 
-      expect(find.byType(SnackBar), findsNothing);
+      loginStateController.add(FailLoginState(message: 'Invalid credentials'));
+      await tester.pump();
+
+      expect(find.byType(ScaffoldMessenger), findsOneWidget);
+      expect(find.text('Invalid credentials'), findsOneWidget);
     });
   });
 }

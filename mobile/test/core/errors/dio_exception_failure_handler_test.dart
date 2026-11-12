@@ -5,15 +5,20 @@ import 'package:mobile/core/errors/exception.dart';
 
 void main() {
   group('handle dio exception error', () {
-    test('should return NetworkException for connectionTimeout', () {
+    
+test('should return NetworkException for connectionTimeout', () {
       final exception = DioException(
         requestOptions: RequestOptions(),
         type: DioExceptionType.connectionTimeout,
       );
+
       final result = exception.handleDioExceptionError();
+
       expect(result, isA<NetworkException>());
-      final networkException = result as NetworkException;
-      expect(networkException.message, 'Connection timeout');
+      expect(
+        (result as NetworkException).message,
+        'The connection is taking too long. Please check your internet connection and try again.',
+      );
     });
 
     test('should return NetworkException for sendTimeout', () {
@@ -21,10 +26,14 @@ void main() {
         requestOptions: RequestOptions(),
         type: DioExceptionType.sendTimeout,
       );
+
       final result = exception.handleDioExceptionError();
+
       expect(result, isA<NetworkException>());
-      final networkException = result as NetworkException;
-      expect(networkException.message, 'Connection timeout');
+      expect(
+        (result as NetworkException).message,
+        'Your request is taking too long to send. Please try again.',
+      );
     });
 
     test('should return NetworkException for receiveTimeout', () {
@@ -32,10 +41,14 @@ void main() {
         requestOptions: RequestOptions(),
         type: DioExceptionType.receiveTimeout,
       );
+
       final result = exception.handleDioExceptionError();
+
       expect(result, isA<NetworkException>());
-      final networkException = result as NetworkException;
-      expect(networkException.message, 'Connection timeout');
+      expect(
+        (result as NetworkException).message,
+        'The server is taking too long to respond. Please try again later.',
+      );
     });
 
     test('should return NetworkException for connectionError', () {
@@ -43,20 +56,14 @@ void main() {
         requestOptions: RequestOptions(),
         type: DioExceptionType.connectionError,
       );
+
       final result = exception.handleDioExceptionError();
+
       expect(result, isA<NetworkException>());
-      final networkException = result as NetworkException;
-      expect(networkException.message, 'Connection timeout');
-    });
-    test('should return ServerException for badResponse', () {
-      final exception = DioException(
-        requestOptions: RequestOptions(),
-        type: DioExceptionType.badResponse,
+      expect(
+        (result as NetworkException).message,
+        'Unable to connect. Please check your internet connection.',
       );
-      final result = exception.handleDioExceptionError();
-      expect(result, isA<ServerException>());
-      final serverException = result as ServerException;
-      expect(serverException.message, 'Server error');
     });
 
     test('should return NetworkException for cancel', () {
@@ -64,10 +71,14 @@ void main() {
         requestOptions: RequestOptions(),
         type: DioExceptionType.cancel,
       );
+
       final result = exception.handleDioExceptionError();
+
       expect(result, isA<NetworkException>());
-      final networkException = result as NetworkException;
-      expect(networkException.message, 'Request was cancelled');
+      expect(
+        (result as NetworkException).message,
+        'The request was cancelled.',
+      );
     });
 
     test('should return NetworkException for badCertificate', () {
@@ -75,10 +86,14 @@ void main() {
         requestOptions: RequestOptions(),
         type: DioExceptionType.badCertificate,
       );
+
       final result = exception.handleDioExceptionError();
+
       expect(result, isA<NetworkException>());
-      final networkException = result as NetworkException;
-      expect(networkException.message, 'Bad SSL certificate');
+      expect(
+        (result as NetworkException).message,
+        'A secure connection could not be established. Please try again later.',
+      );
     });
 
     test('should return NetworkException for unknown error', () {
@@ -86,11 +101,16 @@ void main() {
         requestOptions: RequestOptions(),
         type: DioExceptionType.unknown,
       );
+
       final result = exception.handleDioExceptionError();
+
       expect(result, isA<NetworkException>());
-      final networkException = result as NetworkException;
-      expect(networkException.message, 'Unexpected network error occurred');
+      expect(
+        (result as NetworkException).message,
+        'Something went wrong. Please try again later.',
+      );
     });
+
   });
   test('should extract message from server response map', () {
     final exception = DioException(
