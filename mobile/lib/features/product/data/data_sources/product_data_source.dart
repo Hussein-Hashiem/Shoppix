@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:mobile/core/errors/exception.dart';
 import 'package:mobile/core/network/api_client.dart';
 import 'package:mobile/core/utils/constants/endpoints.dart';

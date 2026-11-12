@@ -19,6 +19,7 @@ class GetProductsUsecase
   }
 }
 
+// ignore: must_be_immutable
 class AllProductsParams extends Equatable {
   String? token;
   AllProductsParams(this.token);

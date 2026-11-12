@@ -52,7 +52,7 @@ void main() {
       ).called(1);
     });
     test("check if the method returns ServerException when it fails", () async {
-      final ServerFailure expectedFailure = ServerFailure(
+      final NotFoundFailure expectedFailure = NotFoundFailure(
         'The requested information could not be found.',
       );
       when(
@@ -110,7 +110,7 @@ void main() {
       ).called(1);
     });
     test("check if the method returns ServerFailure when it fails", () async {
-      final ServerFailure expectedFailure = ServerFailure(
+      final NotFoundFailure expectedFailure = NotFoundFailure(
         'The requested information could not be found.',
       );
       when(

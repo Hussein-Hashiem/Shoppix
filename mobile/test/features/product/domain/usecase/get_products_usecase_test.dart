@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/core/errors/failures.dart';
 import 'package:mobile/features/product/domain/entities/product_entity.dart';
 import 'package:mobile/features/product/domain/repo/product_repo.dart';
-import 'package:mobile/features/product/domain/usecases/get_product_by_id.dart';
 import 'package:mobile/features/product/domain/usecases/get_products_usecase.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -55,7 +54,7 @@ void main() {
     });
     test("check if the method returns ServerFailure", () async {
       final expected = ServerFailure("Your session has expired");
-      when(() => productRepoMock.getAllProducts(token: "12345"))
+      when(() => productRepoMock.getAllProducts(token: "1234"))
           .thenAnswer((_) async => left(expected));
 
       final result = await getProductsUsecase(AllProductsParams("1234"));

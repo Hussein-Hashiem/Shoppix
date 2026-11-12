@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/core/routing/routes.dart';
@@ -50,10 +49,16 @@ class BrowseProductsScreen extends StatelessWidget {
                     }
                   }
                 },
-                builder: (context, state) {
-                  if (state is LoadingGetAllProductState) {
-                    return Center(child: CircularProgressIndicator());
+                
+builder: (context, state) {
+                  if (state is InitialGetAllProductState) {
+                    return const Center(child: Text('Preparing products...'));
                   }
+
+                  if (state is LoadingGetAllProductState) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
                   if (state is FailGetAllProductState) {
                     return Center(
                       child: Text(
@@ -62,10 +67,14 @@ class BrowseProductsScreen extends StatelessWidget {
                       ),
                     );
                   }
-                  return ProductsList(
-                    products: (state as SuccessGetAllProductState).products,
-                  );
+
+                  if (state is SuccessGetAllProductState) {
+                    return ProductsList(products: state.products);
+                  }
+
+                  return const SizedBox.shrink();
                 },
+
               ),
             ],
           ),

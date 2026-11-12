@@ -65,14 +65,18 @@ void main() {
         'message': 'We’re having trouble processing your request. Please try again later.',
       },
     ];
-    test("test if server failure is returned successfully ", () {
+    
+test("test if server failure is returned successfully ", () {
       for (final testCase in testCases) {
-        final expected = ServerFailure(testCase['message']! as String);
+        final statusCode = testCase['statusCode'] as int;
+        final message = testCase['message'] as String;
+
+        final expected = statusCode == 404
+            ? NotFoundFailure(message)
+            : ServerFailure(message);
+
         final result = exceptionHandler.handleException(
-          ServerException(
-            message: testCase['message']! as String,
-            statusCode: testCase['statusCode'] as int,
-          ),
+          ServerException(message: message, statusCode: statusCode),
         );
 
         expect(result, expected);

@@ -6,7 +6,7 @@ class LoginModel extends LoginEntity {
   final String refreshToken;
   final int expiresIn;
 
-  new({
+  const LoginModel({
     required super.token,
     required this.name,
     required this.email,

@@ -1,7 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/core/di/di.dart';
 import 'package:mobile/core/errors/failures.dart';
 import 'package:mobile/core/storage/secure_storage.dart';
 import 'package:mobile/features/product/domain/entities/product_entity.dart';

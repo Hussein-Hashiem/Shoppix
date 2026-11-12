@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/core/errors/exception.dart';
 import 'package:mobile/core/network/api_client.dart';
 import 'package:mobile/core/utils/constants/endpoints.dart';
-import 'package:mobile/core/utils/responsive/responsive.dart';
 import 'package:mobile/features/product/data/data_sources/product_data_source.dart';
 import 'package:mobile/features/product/data/models/product_model.dart';
 import 'package:mocktail/mocktail.dart';

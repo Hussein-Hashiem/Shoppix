@@ -22,8 +22,10 @@ import 'package:mobile/features/cart/presentation/viewmodel/cart_cubit.dart';
 import 'package:mobile/features/product/data/data_sources/product_data_source.dart';
 import 'package:mobile/features/product/data/repo/product_repo_impl.dart';
 import 'package:mobile/features/product/domain/repo/product_repo.dart';
+import 'package:mobile/features/product/domain/usecases/get_product_by_id.dart';
 import 'package:mobile/features/product/domain/usecases/get_products_usecase.dart';
 import 'package:mobile/features/product/presentation/viewmodel/get_all_products_cubit/get_all_products_cubit.dart';
+import 'package:mobile/features/product/presentation/viewmodel/get_product_by_id_cubit/get_product_by_id_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/constants/endpoints.dart';
@@ -76,6 +78,7 @@ Future<void> setup() async {
   sl.registerLazySingleton<GetProductsUsecase>(
     () => GetProductsUsecase(productRepo: sl()),
   );
+  sl.registerLazySingleton<GetProductByIdUsecase>(() =>GetProductByIdUsecase(sl()));
   sl.registerLazySingleton<GetCartUsecase>(
     () => GetCartUsecase(cartRepo: sl()),
   );
@@ -104,6 +107,7 @@ Future<void> setup() async {
   sl.registerSingleton<LoginCubit>(LoginCubit(sl()));
   sl.registerSingleton<RegisterCubit>(RegisterCubit(sl()));
   sl.registerSingleton<GetAllProductsCubit>(GetAllProductsCubit(sl(), sl()));
+  sl.registerSingleton<GetProductByIdCubit>(GetProductByIdCubit(sl()));
   sl.registerFactory<CartCubit>(
     () => CartCubit(
       getCartUsecase: sl<GetCartUsecase>(),

@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile/core/di/di.dart';
 import 'package:mobile/core/routing/routes.dart';
 import 'package:mobile/core/utils/theme/app_theme.dart';
-import 'package:mobile/features/auth/presentation/screens/login_screens/login_screen.dart';
 import 'package:mobile/features/auth/presentation/screens/register_screens/register_screen.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/login_viewmodel/login_cubit.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/login_viewmodel/login_states.dart';
