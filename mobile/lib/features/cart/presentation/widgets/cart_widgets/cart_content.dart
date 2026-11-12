@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mobile/core/utils/responsive/responsive.dart';
 import 'package:mobile/features/cart/domain/entities/cart_entity.dart';
 import 'package:mobile/features/cart/presentation/widgets/cart_widgets/benefits.dart';
