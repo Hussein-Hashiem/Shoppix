@@ -20,15 +20,15 @@ class ApiClientImpl implements ApiClient {
         ),
       );
     } on DioException catch (e) {
-      print('type: ${e.type}');
-      print('error: ${e.error}');
-      print('message: ${e.message}');
+      // print('type: ${e.type}');
+      // print('error: ${e.error}');
+      // print('message: ${e.message}');
 
-      print('Status: ${e.response?.statusCode}');
-      print('Requested URL: ${e.requestOptions.uri}');
-      print('Redirect location: ${e.response?.headers.value('location')}');
-      print('Response headers: ${e.response?.headers}');
-      print('Response body: ${e.response?.data}');
+      // print('Status: ${e.response?.statusCode}');
+      // print('Requested URL: ${e.requestOptions.uri}');
+      // print('Redirect location: ${e.response?.headers.value('location')}');
+      // print('Response headers: ${e.response?.headers}');
+      // print('Response body: ${e.response?.data}');
       throw (e.handleDioExceptionError());
     }
   }
@@ -71,11 +71,11 @@ class ApiClientImpl implements ApiClient {
         ),
       );
     } on DioException catch (e) {
-      print('Status: ${e.response?.statusCode}');
-      print('Requested URL: ${e.requestOptions.uri}');
-      print('Redirect location: ${e.response?.headers.value('location')}');
-      print('Response headers: ${e.response?.headers}');
-      print('Response body: ${e.response?.data}');
+      // print('Status: ${e.response?.statusCode}');
+      // print('Requested URL: ${e.requestOptions.uri}');
+      // print('Redirect location: ${e.response?.headers.value('location')}');
+      // print('Response headers: ${e.response?.headers}');
+      // print('Response body: ${e.response?.data}');
       throw (e.handleDioExceptionError());
     }
   }

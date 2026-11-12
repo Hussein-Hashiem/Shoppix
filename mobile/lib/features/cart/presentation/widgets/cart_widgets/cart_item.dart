@@ -30,7 +30,7 @@ final CartItemEntity item;
             child: Image.network(
               product.imageUrl,
               fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) {
+              errorBuilder: (_, _, _) {
                 return Icon(
                   Icons.image_not_supported_outlined,
                   color: Colors.grey,

@@ -63,7 +63,6 @@ class CartContent extends StatelessWidget {
           height: Responsive.h(54),
           child: ElevatedButton(
             onPressed: () {
-              // TODO: Navigate to the checkout page.
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.black,

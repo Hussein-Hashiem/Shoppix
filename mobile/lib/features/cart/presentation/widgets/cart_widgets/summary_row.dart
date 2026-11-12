@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mobile/core/utils/responsive/responsive.dart';
 
 class SummaryRow extends StatelessWidget {

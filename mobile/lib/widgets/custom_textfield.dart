@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/core/utils/constants/style.dart';
 import 'package:mobile/core/utils/responsive/responsive.dart';
 
+// ignore: must_be_immutable
 class CustomTextfield extends StatefulWidget {
   final String hint;
   final TextEditingController controller;
