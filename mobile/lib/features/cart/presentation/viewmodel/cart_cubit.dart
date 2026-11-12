@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/core/usecases/usecase.dart';
+import 'package:mobile/features/cart/domain/entities/cart_entity.dart';
 import 'package:mobile/features/cart/domain/usecases/get_cart_usecase.dart';
 import 'package:mobile/features/cart/domain/usecases/add_product_to_cart_usecase.dart';
 import 'package:mobile/features/cart/domain/usecases/decrease_product_quantity_usecase.dart';
@@ -36,12 +37,17 @@ class CartCubit extends Cubit<CartState> {
       AddProductParams(productId: productId),
     );
 
-    await result.fold(
-      (failure) async {
+     result.fold(
+      (failure)  {
         emit(CartFail(message: failure.message));
       },
-      (_) async {
-        await getCartProducts();
+      (_) {
+        final current = state;
+        if (current is! CartSuccess)return; 
+        final updated = current.cart.items
+            .map((t) => t.product.id == productId ? CartItemEntity(product: t.product, quantity: t.quantity+1) : t)
+            .toList(); 
+        emit(CartSuccess(cart: CartEntity(items: updated)));
       },
     );
   }
@@ -51,13 +57,21 @@ class CartCubit extends Cubit<CartState> {
       DecreaseProductParams(id: productId),
     );
 
-    await result.fold(
-      (failure) async {
+     result.fold(
+      (failure)  {
         emit(CartFail(message: failure.message));
       },
-      (_) async {
-        await getCartProducts();
-      },
+      (_)  {
+        final current= state;
+        if (current is! CartSuccess) return;
+        final updatedItems = current.cart.items
+            .map(
+              (r) => r.product.id == productId ? CartItemEntity(product: r.product, quantity: r.quantity - 1) : r,
+            ) 
+            .where((r) => r.quantity > 0)
+            .toList();
+            emit(CartSuccess(cart: CartEntity(items: updatedItems)));
+      }
     );
   }
 
@@ -66,12 +80,17 @@ class CartCubit extends Cubit<CartState> {
       DeleteProductParams(id: productId),
     );
 
-    await result.fold(
-      (failure) async {
+     result.fold(
+      (failure)  {
         emit(CartFail(message: failure.message));
       },
-      (_) async {
-        await getCartProducts();
+      (_)  {
+        final current = state;
+        if (current is! CartSuccess) return;
+        final kept = current.cart.items
+            .where((r) => r.product.id != productId)
+            .toList();
+        emit(CartSuccess(cart: CartEntity(items: kept)));
       },
     );
   }

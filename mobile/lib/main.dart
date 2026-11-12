@@ -9,6 +9,7 @@ import 'package:mobile/features/auth/presentation/viewmodel/register_viewmodel.d
 import 'package:mobile/features/cart/presentation/viewmodel/cart_cubit.dart';
 import 'package:mobile/features/product/presentation/viewmodel/get_all_products_cubit/get_all_products_cubit.dart';
 import 'package:mobile/features/product/presentation/viewmodel/get_product_by_id_cubit/get_product_by_id_cubit.dart';
+import 'package:mobile/layout/presentation/cubit/layout_cubit.dart';
 
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +19,7 @@ void main()async {
   runApp(
     MultiBlocProvider(
       providers: [
+        BlocProvider(create: (context) => LayoutCubit()),
         BlocProvider(create: (context) => sl<LoginCubit>()),
         BlocProvider(create: (context) => sl<RegisterCubit>()),
         BlocProvider(create: (context) => sl<GetAllProductsCubit>()..getAllProducts()),

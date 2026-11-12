@@ -5,10 +5,40 @@ import 'package:mobile/features/auth/presentation/screens/register_screens/regis
 import 'package:mobile/features/cart/presentation/screens/cart_screen.dart';
 import 'package:mobile/features/product/presentation/screens/browse_products_screens/browse_products_screen.dart';
 import 'package:mobile/features/product/presentation/screens/product_details_screen/product_details_screen.dart';
+import 'package:mobile/layout/presentation/pages/layout_screen.dart';
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: Routes.cart,
+  initialLocation: '/',
   routes: [
+    ShellRoute(
+      builder: (context, state, child) {
+        return LayoutScreen(
+          child: child,
+        );
+      },
+      routes: [
+        GoRoute(
+          path: '/',
+          name: 'shop',
+          builder: (context, state) => const BrowseProductsScreen(),
+        ),
+        GoRoute(
+          path: '/cart',
+          name: Routes.cart,
+          builder: (context, state) => const CartScreen(),
+        ),
+        GoRoute(
+          path: '/orders',
+          name: 'orders',
+          builder: (context, state) => const CartScreen(), // Replace with OrdersScreen
+        ),
+        GoRoute(
+          path: '/profile',
+          name: 'profile',
+          builder: (context, state) => const CartScreen(), // Replace with ProfileScreen
+        ),
+      ],
+    ),
     GoRoute(
       path: Routes.login,
       name: Routes.login,
@@ -25,16 +55,10 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const BrowseProductsScreen(),
     ),
     GoRoute(
-      path: Routes.cart,
-      name: Routes.cart,
-      builder: (context, state) => const CartScreen(),
-    ),
-    GoRoute(
       path: Routes.productDetails,
       name: Routes.productDetails,
       builder: (context, state) {
         final productId = int.parse(state.pathParameters['id']!);
-
         return ProductDetailsScreen(productId: productId);
       },
     ),
