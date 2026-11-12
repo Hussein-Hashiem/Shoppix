@@ -54,7 +54,7 @@ void main() {
     });
     test("check if the method returns ServerFailure", () async {
       final expected = ServerFailure("Your session has expired");
-      when(() => productRepoMock.getAllProducts(token: "12345"))
+      when(() => productRepoMock.getAllProducts(token: "1234"))
           .thenAnswer((_) async => left(expected));
 
       final result = await getProductsUsecase(AllProductsParams("1234"));
