@@ -1,11 +1,38 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mobile/core/network/api_client.dart';
+import 'package:mobile/core/network/api_client_impl.dart';
+import 'package:mobile/core/storage/secure_storage.dart';
+import 'package:mobile/features/auth/data/data_source/server_datasource.dart';
+import 'package:mobile/features/auth/data/repo/auth_repo_impl.dart';
+import 'package:mobile/features/auth/domain/repo/auth_repo.dart';
+import 'package:mobile/features/auth/domain/usecases/login_usecase.dart';
+import 'package:mobile/features/auth/domain/usecases/register_usecase.dart';
+import 'package:mobile/features/auth/presentation/viewmodel/login_viewmodel/login_cubit.dart';
+import 'package:mobile/features/auth/presentation/viewmodel/register_viewmodel.dart/register_cubit.dart';
+import 'package:mobile/features/cart/data/data_sources/cart_local_data_source.dart';
+import 'package:mobile/features/cart/data/repo/cart_repo_impl.dart';
+import 'package:mobile/features/cart/domain/repo/cart_repo.dart';
+import 'package:mobile/features/cart/domain/usecases/add_product_to_cart_usecase.dart';
+import 'package:mobile/features/cart/domain/usecases/decrease_product_quantity_usecase.dart';
+import 'package:mobile/features/cart/domain/usecases/delete_product_from_cart_usecase.dart';
+import 'package:mobile/features/cart/domain/usecases/get_cart_usecase.dart';
+import 'package:mobile/features/cart/presentation/viewmodel/cart_cubit.dart';
+import 'package:mobile/features/product/data/data_sources/product_data_source.dart';
+import 'package:mobile/features/product/data/repo/product_repo_impl.dart';
+import 'package:mobile/features/product/domain/repo/product_repo.dart';
+import 'package:mobile/features/product/domain/usecases/get_product_by_id.dart';
+import 'package:mobile/features/product/domain/usecases/get_products_usecase.dart';
+import 'package:mobile/features/product/presentation/viewmodel/get_all_products_cubit/get_all_products_cubit.dart';
+import 'package:mobile/features/product/presentation/viewmodel/get_product_by_id_cubit/get_product_by_id_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/constants/endpoints.dart';
 
 final sl = GetIt.instance;
 
-void setup() {
+Future<void> setup() async {
   final dio = Dio(
     BaseOptions(
       baseUrl: ApiEndpoints.baseUrl,
@@ -15,6 +42,78 @@ void setup() {
     ),
   );
 
+  //sharedPreferences
+  final sharedPreferences = await SharedPreferences.getInstance();
+  sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
+  // dio and api client
   sl.registerLazySingleton<Dio>(() => dio);
+  sl.registerLazySingleton<ApiClient>(() => ApiClientImpl(sl()));
+
+  // data sources
+  sl.registerLazySingleton<ServerDatasource>(
+    () => ServerDatasource(apiClient: sl()),
+  );
+  sl.registerLazySingleton<ProductDataSource>(
+    () => ProductDataSource(apiClient: sl()),
+  );
+  sl.registerLazySingleton<CartLocalDataSource>(
+    () => CartLocalDataSource(pref: sl()),
+  );
+
+  // repos
+  sl.registerLazySingleton<AuthRepo>(
+    () => AuthRepoImpl(serverDatasource: sl()),
+  );
+  sl.registerLazySingleton<ProductRepo>(
+    () => ProductRepoImpl(productDataSource: sl()),
+  );
+  sl.registerLazySingleton<CartRepo>(
+    () => CartRepoImpl(cartLocalDataSource: sl(), productRepo: sl()),
+  );
+
+  // usecases
+  sl.registerLazySingleton<RegisterUsecase>(() => RegisterUsecase(sl()));
+  sl.registerLazySingleton<LoginUsecase>(() => LoginUsecase(sl()));
+  sl.registerLazySingleton<GetProductsUsecase>(
+    () => GetProductsUsecase(productRepo: sl()),
+  );
+  sl.registerLazySingleton<GetProductByIdUsecase>(() =>GetProductByIdUsecase(sl()));
+  sl.registerLazySingleton<GetCartUsecase>(
+    () => GetCartUsecase(cartRepo: sl()),
+  );
+  sl.registerLazySingleton<AddProductToCartUsecase>(
+    () => AddProductToCartUsecase(cartRepo: sl()),
+  );
+  sl.registerLazySingleton<DecreaseProductQuantityUsecase>(
+    () => DecreaseProductQuantityUsecase(cartRepo: sl()),
+  );
+  sl.registerLazySingleton<DeleteProductFromCartUsecase>(
+    () => DeleteProductFromCartUsecase(cartRepo: sl()),
+  );
+
+  // flutter secure storage
+  sl.registerSingleton<FlutterSecureStorage>(
+    FlutterSecureStorage(
+      aOptions: AndroidOptions(),
+      iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
+    ),
+  );
+
+  // token secure storage
+  sl.registerLazySingleton<SecureTokenStorage>(() => SecureTokenStorage(sl()));
+
+  // cubits
+  sl.registerSingleton<LoginCubit>(LoginCubit(sl()));
+  sl.registerSingleton<RegisterCubit>(RegisterCubit(sl()));
+  sl.registerSingleton<GetAllProductsCubit>(GetAllProductsCubit(sl(), sl()));
+  sl.registerSingleton<GetProductByIdCubit>(GetProductByIdCubit(sl()));
+  sl.registerFactory<CartCubit>(
+    () => CartCubit(
+      getCartUsecase: sl<GetCartUsecase>(),
+      addProductToCartUsecase: sl<AddProductToCartUsecase>(),
+      decreaseProductQuantityUsecase: sl<DecreaseProductQuantityUsecase>(),
+      deleteProductFromCartUsecase: sl<DeleteProductFromCartUsecase>(),
+    ),
+  );
 }

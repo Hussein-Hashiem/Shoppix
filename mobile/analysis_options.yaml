@@ -10,6 +10,8 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
+  errors:
+    unused_catch_clause: ignore
   exclude:
     - build/**
     - android/**

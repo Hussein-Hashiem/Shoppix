@@ -19,3 +19,10 @@ class CacheFailure extends Failure {
 class NetworkFailure extends Failure {
   const NetworkFailure(super.message);
 }
+
+class UnexpectedFailure extends Failure {
+  const UnexpectedFailure(super.message);
+}
+class NotFoundFailure extends Failure{
+  const NotFoundFailure(super.message);
+}
