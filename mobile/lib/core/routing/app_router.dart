@@ -8,6 +8,7 @@ import 'package:mobile/features/product/presentation/screens/product_details_scr
 import 'package:mobile/layout/presentation/pages/layout_screen.dart';
 
 final GoRouter appRouter = GoRouter(
+
   initialLocation: '/',
   routes: [
     ShellRoute(
@@ -54,6 +55,7 @@ final GoRouter appRouter = GoRouter(
       name: Routes.browseProducts,
       builder: (context, state) => const BrowseProductsScreen(),
     ),
+
     GoRoute(
       path: Routes.productDetails,
       name: Routes.productDetails,

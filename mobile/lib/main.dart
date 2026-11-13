@@ -11,8 +11,9 @@ import 'package:mobile/features/product/presentation/viewmodel/get_all_products_
 import 'package:mobile/features/product/presentation/viewmodel/get_product_by_id_cubit/get_product_by_id_cubit.dart';
 import 'package:mobile/layout/presentation/cubit/layout_cubit.dart';
 
-void main()async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   Responsive.initFromView();
   await setup();
 
@@ -22,9 +23,11 @@ void main()async {
         BlocProvider(create: (context) => LayoutCubit()),
         BlocProvider(create: (context) => sl<LoginCubit>()),
         BlocProvider(create: (context) => sl<RegisterCubit>()),
-        BlocProvider(create: (context) => sl<GetAllProductsCubit>()..getAllProducts()),
-        BlocProvider(create: (context)=>sl<CartCubit>()),
-        BlocProvider(create: (context)=>sl<GetProductByIdCubit>()),
+        BlocProvider(
+          create: (context) => sl<GetAllProductsCubit>()..getAllProducts(),
+        ),
+        BlocProvider(create: (context) => sl<CartCubit>()),
+        BlocProvider(create: (context) => sl<GetProductByIdCubit>()),
       ],
       child: const MyApp(),
     ),

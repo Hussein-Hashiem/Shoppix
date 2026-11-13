@@ -29,16 +29,11 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Shoppix / Cart",
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        centerTitle: false,
-      ),
+      backgroundColor: const Color(0xFFFAFAFA),
       body: SafeArea(
         child: Column(
           children: [
+            _buildHeader(),
             Expanded(
               child: BlocBuilder<CartCubit, CartState>(
                 builder: (context, state) {
@@ -74,13 +69,11 @@ class _CartScreenState extends State<CartScreen> {
                   }
 
                   if (state is CartSuccess) {
-                    final cart = state.cart;
-
-                    if (cart.items.isEmpty) {
+                    if (state.cart.items.isEmpty) {
                       return EmptyCart();
                     }
 
-                    return CartContent(cart: cart);
+                    return CartContent(cart: state.cart);
                   }
 
                   return const SizedBox.shrink();
@@ -89,6 +82,71 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: Responsive.w(20),
+        vertical: Responsive.h(16),
+      ),
+      decoration: const BoxDecoration(
+        border: Border(bottom: BorderSide(color: Color(0xFFEEEEEE))),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: Responsive.w(42),
+            height: Responsive.w(42),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.black, width: Responsive.r(1.5)),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              'M',
+              style: TextStyle(
+                fontSize: Responsive.sp(18),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          SizedBox(width: Responsive.w(12)),
+          Text(
+            'SHOPPIX',
+            style: TextStyle(
+              fontSize: Responsive.sp(18),
+              fontWeight: FontWeight.w700,
+              letterSpacing: Responsive.w(2),
+            ),
+          ),
+          SizedBox(width: Responsive.w(18)),
+          Text(
+            '/',
+            style: TextStyle(fontSize: Responsive.sp(20), color: Colors.grey),
+          ),
+          SizedBox(width: Responsive.w(18)),
+          Text(
+            'CART',
+            style: TextStyle(
+              fontSize: Responsive.sp(16),
+              fontWeight: FontWeight.w600,
+              letterSpacing: Responsive.w(1),
+            ),
+          ),
+          const Spacer(),
+          CircleAvatar(
+            radius: Responsive.r(20),
+            backgroundColor: const Color(0xFFE8E8E8),
+            child: Icon(
+              Icons.person_outline,
+              color: Colors.black,
+              size: Responsive.sp(24),
+            ),
+          ),
+        ],
       ),
     );
   }
