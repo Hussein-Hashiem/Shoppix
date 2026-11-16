@@ -14,16 +14,21 @@ class CartRepoImpl implements CartRepo {
 
   CartRepoImpl({required this.cartLocalDataSource, required this.productRepo});
   @override
-  Future<Either<Failure, Unit>> addProductToCart(int productId) async {
+  Future<Either<Failure, Unit>> addProductToCart(
+    int productId, {
+    int quantity = 1,
+  }) async {
     try {
       final products = await cartLocalDataSource.getCartProducts();
       final index = products.indexWhere((p) => p.productId == productId);
       if (index == -1) {
-        products.add(CartModel(productId: productId, productQuantity: 1));
+        products.add(
+          CartModel(productId: productId, productQuantity: quantity),
+        );
       } else {
         products[index] = CartModel(
           productId: productId,
-          productQuantity: products[index].productQuantity + 1,
+          productQuantity: products[index].productQuantity + quantity,
         );
       }
       await cartLocalDataSource.saveCartProducts(products);
@@ -57,17 +62,27 @@ class CartRepoImpl implements CartRepo {
   }
 
   @override
-  Future<Either<Failure, Unit>> deleteProductFromCart(int productId) async{
+  Future<Either<Failure, Unit>> deleteProductFromCart(int productId) async {
     try {
       final products = await cartLocalDataSource.getCartProducts();
       final index = products.indexWhere((p) => p.productId == productId);
-      if(index==-1)return right(unit);
+      if (index == -1) return right(unit);
       products.removeAt(index);
       await cartLocalDataSource.saveCartProducts(products);
       return right(unit);
-    }on CacheException catch (e) {
+    } on CacheException catch (e) {
       final ExceptionHandler handler = ExceptionHandler();
       return left(handler.handleException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> clearCart() async {
+    try {
+      await cartLocalDataSource.clearCart();
+      return right(unit);
+    } on CacheException catch (e) {
+      return left(ExceptionHandler().handleException(e));
     }
   }
 

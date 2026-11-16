@@ -1,15 +1,13 @@
 import 'package:mobile/features/auth/domain/entities/login_entity.dart';
 
 class LoginModel extends LoginEntity {
-  final String name;
-  final String email;
   final String refreshToken;
   final int expiresIn;
 
-  const LoginModel({
+  new({
     required super.token,
-    required this.name,
-    required this.email,
+    required super.name,
+    required super.email,
     required this.refreshToken,
     required this.expiresIn,
   });

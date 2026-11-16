@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/core/routing/routes.dart';
 
 import '../cubit/layout_cubit.dart';
 import '../cubit/layout_state.dart';
@@ -14,7 +15,12 @@ class LayoutScreen extends StatelessWidget {
   void _onNavTap(BuildContext context, int index) {
     context.read<LayoutCubit>().changeBottomNavIndex(index);
 
-    final routes = ['/', '/cart', '/orders', '/profile'];
+    const routes = [
+      Routes.home,
+      Routes.cart,
+      Routes.orderHistory,
+      Routes.profile,
+    ];
     context.go(routes[index]);
   }
 

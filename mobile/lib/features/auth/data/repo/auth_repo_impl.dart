@@ -24,7 +24,13 @@ class AuthRepoImpl implements AuthRepo {
         email: email,
         password: password,
       );
-      return right(LoginEntity(token: response.token));
+      return right(
+        LoginEntity(
+          token: response.token,
+          name: response.name,
+          email: response.email,
+        ),
+      );
     } on ServerException catch (e) {
       final ExceptionHandler exceptionHandler = ExceptionHandler();
       return left(exceptionHandler.handleException(e));

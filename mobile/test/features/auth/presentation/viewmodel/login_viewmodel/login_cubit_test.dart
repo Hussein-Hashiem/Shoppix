@@ -21,8 +21,13 @@ void main() {
     setUp(() {
       loginUsecaseMock = LoginUsecaseMock();
       storageMock = SecureTokenStorageMock();
-
       when(() => storageMock.saveToken(any())).thenAnswer((_) async {});
+      when(
+        () => storageMock.saveProfile(
+          name: any(named: 'name'),
+          email: any(named: 'email'),
+        ),
+      ).thenAnswer((_) async {});
     });
 
     blocTest<LoginCubit, LoginStates>(
@@ -32,8 +37,11 @@ void main() {
           () => loginUsecaseMock(
             LoginParams(email: "alimohamed@gmail.com", password: '1234567Aa@'),
           ),
-        ).thenAnswer((_) async => right(LoginEntity(token: '1234')));
-
+        ).thenAnswer(
+          (_) async => right(
+            LoginEntity(token: '1234', name: 'Ali', email: 'ali@example.com'),
+          ),
+        );
         return LoginCubit(loginUsecaseMock, storage: storageMock);
       },
       act: (bloc) =>
@@ -45,11 +53,12 @@ void main() {
             LoginParams(email: "alimohamed@gmail.com", password: '1234567Aa@'),
           ),
         ).called(1);
-
         verify(() => storageMock.saveToken('1234')).called(1);
+        verify(
+          () => storageMock.saveProfile(name: 'Ali', email: 'ali@example.com'),
+        ).called(1);
       },
     );
-
     blocTest<LoginCubit, LoginStates>(
       "emits [loading, fail] when the call is unsuccessful",
       build: () {
@@ -58,7 +67,6 @@ void main() {
             LoginParams(email: "alimohamed@gmail.com", password: '1234567Aa@'),
           ),
         ).thenAnswer((_) async => left(ServerFailure("User Not Found")));
-
         return LoginCubit(loginUsecaseMock, storage: storageMock);
       },
       act: (bloc) =>
@@ -73,8 +81,13 @@ void main() {
             LoginParams(email: "alimohamed@gmail.com", password: '1234567Aa@'),
           ),
         ).called(1);
-
         verifyNever(() => storageMock.saveToken(any()));
+        verifyNever(
+          () => storageMock.saveProfile(
+            name: any(named: 'name'),
+            email: any(named: 'email'),
+          ),
+        );
       },
     );
   });

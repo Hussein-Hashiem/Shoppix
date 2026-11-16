@@ -1,33 +1,3 @@
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-// import 'package:mobile/core/storage/secure_storage.dart';
-// import 'package:mobile/features/auth/domain/usecases/login_usecase.dart';
-// import 'package:mobile/features/auth/presentation/viewmodel/login_viewmodel/login_states.dart';
-
-// class LoginCubit extends Cubit<LoginStates> {
-//   LoginCubit(this.loginUsecase) : super(InitialLoginState());
-//   final LoginUsecase loginUsecase;
-//   final SecureTokenStorage tokenStorage = SecureTokenStorage(
-//     FlutterSecureStorage(
-//       aOptions: AndroidOptions(),
-//       iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
-//     ),
-//   );
-
-//   void login({required String email, required String password}) async {
-//     emit(LoadingLoginState());
-//     final result = await loginUsecase(
-//       LoginParams(email: email, password: password),
-//     );
-//     result.fold((failure) => emit(FailLoginState(message: failure.message)), (
-//       success,
-//     ) async {
-//       await tokenStorage.saveToken(success.token);
-//       emit(SuccessLoginState());
-//     });
-//   }
-// }
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mobile/core/storage/secure_storage.dart';
@@ -35,14 +5,11 @@ import 'package:mobile/features/auth/domain/usecases/login_usecase.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/login_viewmodel/login_states.dart';
 
 class LoginCubit extends Cubit<LoginStates> {
-  final LoginUsecase loginUsecase;
-  final SecureTokenStorage tokenStorage;
-
   LoginCubit(this.loginUsecase, {SecureTokenStorage? storage})
     : tokenStorage =
           storage ??
           SecureTokenStorage(
-            const FlutterSecureStorage(
+            FlutterSecureStorage(
               aOptions: AndroidOptions(),
               iOptions: IOSOptions(
                 accessibility: KeychainAccessibility.first_unlock,
@@ -50,20 +17,22 @@ class LoginCubit extends Cubit<LoginStates> {
             ),
           ),
       super(InitialLoginState());
+  final LoginUsecase loginUsecase;
+  final SecureTokenStorage tokenStorage;
 
   Future<void> login({required String email, required String password}) async {
     emit(LoadingLoginState());
-
     final result = await loginUsecase(
       LoginParams(email: email, password: password),
     );
-
     await result.fold<Future<void>>(
-      (failure) async {
-        emit(FailLoginState(message: failure.message));
-      },
+      (failure) async => emit(FailLoginState(message: failure.message)),
       (success) async {
         await tokenStorage.saveToken(success.token);
+        await tokenStorage.saveProfile(
+          name: success.name,
+          email: success.email,
+        );
         emit(SuccessLoginState());
       },
     );

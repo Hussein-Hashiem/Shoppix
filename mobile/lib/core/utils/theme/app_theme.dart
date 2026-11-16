@@ -15,6 +15,9 @@ class AppTheme {
       bodyLarge: AppTextStyles.bodyLarge,
       bodyMedium: AppTextStyles.bodyMedium,
     ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color: AppColors.button,
+    ),
     appBarTheme: AppBarTheme(backgroundColor: AppColors.appBar),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(

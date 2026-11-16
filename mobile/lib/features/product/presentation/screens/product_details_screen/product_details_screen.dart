@@ -7,6 +7,8 @@ import 'package:mobile/features/cart/presentation/viewmodel/cart_cubit.dart';
 import 'package:mobile/features/product/domain/entities/product_entity.dart';
 import 'package:mobile/features/product/presentation/viewmodel/get_product_by_id_cubit/get_product_by_id_cubit.dart';
 import 'package:mobile/features/product/presentation/viewmodel/get_product_by_id_cubit/get_product_by_id_states.dart';
+import 'package:mobile/features/product/presentation/viewmodel/get_related_products_cubit/get_related_products_cubit.dart';
+import 'package:mobile/features/product/presentation/widgets/product_details_widgets/related_products_section.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final int productId;
@@ -39,10 +41,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           onPressed: () => context.pop(),
           icon: const Icon(Icons.arrow_back),
         ),
-        title: Text('Shoppix', style: Theme.of(context).textTheme.titleMedium),
+        title: Text('SHOPPIX / PRODUCT DETAILS', style: Theme.of(context).textTheme.titleMedium),
         centerTitle: false,
       ),
-      body: BlocBuilder<GetProductByIdCubit, GetProductByIdStates>(
+      body: BlocConsumer<GetProductByIdCubit, GetProductByIdStates>(
+        listener: (context, state) {
+          if (state is SuccessGetProductByIdStates) {
+            context.read<GetRelatedProductsCubit>().getRelatedProducts(
+              state.products.id,
+            );
+          }
+        },
         builder: (context, state) {
           if (state is LoadingGetProductByIdStates) {
             return const Center(child: CircularProgressIndicator());
@@ -231,6 +240,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   'Price per item',
                   '\$ ${product.price.toStringAsFixed(2)}',
                 ),
+
+                RelatedProductsSection(productId: product.id),
               ],
             ),
           ),
@@ -274,11 +285,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   child: ElevatedButton(
                     onPressed: maxQuantity > 0
                         ? () {
-                            for (int i = 0; i < quantity; i++) {
-                              context.read<CartCubit>().addProductToCart(
-                                product.id,
-                              );
-                            }
+                            context.read<CartCubit>().addProductToCart(
+                              product.id,
+                              quantity: quantity,
+                            );
 
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(

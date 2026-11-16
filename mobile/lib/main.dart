@@ -7,8 +7,10 @@ import 'package:mobile/core/utils/theme/app_theme.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/login_viewmodel/login_cubit.dart';
 import 'package:mobile/features/auth/presentation/viewmodel/register_viewmodel.dart/register_cubit.dart';
 import 'package:mobile/features/cart/presentation/viewmodel/cart_cubit.dart';
+import 'package:mobile/features/order/presentation/viewmodel/create_order_cubit.dart';
 import 'package:mobile/features/product/presentation/viewmodel/get_all_products_cubit/get_all_products_cubit.dart';
 import 'package:mobile/features/product/presentation/viewmodel/get_product_by_id_cubit/get_product_by_id_cubit.dart';
+import 'package:mobile/features/product/presentation/viewmodel/get_related_products_cubit/get_related_products_cubit.dart';
 import 'package:mobile/layout/presentation/cubit/layout_cubit.dart';
 
 void main() async {
@@ -27,7 +29,9 @@ void main() async {
           create: (context) => sl<GetAllProductsCubit>()..getAllProducts(),
         ),
         BlocProvider(create: (context) => sl<CartCubit>()),
+        BlocProvider(create: (context) => sl<CreateOrderCubit>()),
         BlocProvider(create: (context) => sl<GetProductByIdCubit>()),
+        BlocProvider(create: (context) => sl<GetRelatedProductsCubit>()),
       ],
       child: const MyApp(),
     ),
