@@ -1,0 +1,56 @@
+# ---- General ----
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+Thumbs.db
+
+# ---- IDEs ----
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.iml
+
+# ---- Frontend (Angular / Node) ----
+node_modules/
+dist/
+.angular/
+.sass-cache/
+/tmp
+/out-tsc
+coverage/
+npm-debug.log*
+yarn-error.log*
+
+# ---- Backend (.NET) ----
+bin/
+obj/
+*.dll
+*.pdb
+appsettings.Local.json
+*.pfx
+
+# ---- Mobile (Flutter / Dart) ----
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+.gradle/
+android/local.properties
+android/key.properties
+*.jks
+ios/Pods/
+ios/.symlinks/
+
+# ---- AI (Python) ----
+__pycache__/
+*.pyc
+venv/
+.venv/
+.ipynb_checkpoints/
