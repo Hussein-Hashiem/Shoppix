@@ -88,7 +88,11 @@ void main() {
         refreshToken: "1234",
         expiresIn: 1800,
       );
-      final expected = LoginEntity(token: '1234');
+      final expected = LoginEntity(
+        token: '1234',
+        name: 'ali',
+        email: 'jfodisjfod',
+      );
       when(
         () => serverDataSourceMock.login(
           email: 'alimohamed@gmail.com',

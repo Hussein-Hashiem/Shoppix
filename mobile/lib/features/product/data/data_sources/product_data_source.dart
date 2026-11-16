@@ -32,11 +32,33 @@ class ProductDataSource {
       final response = await apiClient.get(
         ApiEndpoints.baseUrl + ApiEndpoints.getProductById(id),
       );
-      final product=response.data;
-      return ProductModel.fromJson(product as Map<String,dynamic>);
-    }on ServerException catch (_) {
+      final product = response.data;
+      return ProductModel.fromJson(product as Map<String, dynamic>);
+    } on ServerException catch (_) {
       rethrow;
-    }on NetworkException catch(_){
+    } on NetworkException catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<List<ProductModel>> getRelatedProducts({
+    required int productId,
+    int limit = 2,
+  }) async {
+    try {
+      final response = await apiClient.get(
+        ApiEndpoints.baseUrl + ApiEndpoints.getRelatedProducts(productId),
+        queryParams: {'limit': limit},
+      );
+      final products = response.data;
+      return (products as List)
+          .map(
+            (product) => ProductModel.fromJson(product as Map<String, dynamic>),
+          )
+          .toList();
+    } on ServerException catch (_) {
+      rethrow;
+    } on NetworkException catch (_) {
       rethrow;
     }
   }

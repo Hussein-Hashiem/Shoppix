@@ -42,9 +42,13 @@ class ProductRepoImpl implements ProductRepo {
   }
 
   @override
-  Future<Either<Failure, ProductEntity>> getProductById({required int id})async {
+  Future<Either<Failure, ProductEntity>> getProductById({
+    required int id,
+  }) async {
     try {
-      final ProductEntity response = await productDataSource.getProductById(id: id);
+      final ProductEntity response = await productDataSource.getProductById(
+        id: id,
+      );
       return right(response);
     } on ServerException catch (e) {
       final ExceptionHandler handler = ExceptionHandler();
@@ -55,5 +59,36 @@ class ProductRepoImpl implements ProductRepo {
     }
   }
 
- 
+  @override
+  Future<Either<Failure, List<ProductEntity>>> getRelatedProducts({
+    required int productId,
+    int limit = 2,
+  }) async {
+    try {
+      final products = await productDataSource.getRelatedProducts(
+        productId: productId,
+        limit: limit,
+      );
+      return right(
+        products
+            .map(
+              (product) => ProductEntity(
+                id: product.id,
+                description: product.description,
+                name: product.name,
+                price: product.price,
+                stockQuantity: product.stockQuantity,
+                imageUrl: product.imageUrl,
+              ),
+            )
+            .toList(),
+      );
+    } on ServerException catch (e) {
+      final ExceptionHandler handler = ExceptionHandler();
+      return left(handler.handleException(e));
+    } on NetworkException catch (e) {
+      final ExceptionHandler handler = ExceptionHandler();
+      return left(handler.handleException(e));
+    }
+  }
 }

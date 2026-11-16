@@ -15,7 +15,7 @@ class BrowseProductsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Shoppix", style: Theme.of(context).textTheme.titleMedium),
+        title: Text("SHOPPIX", style: Theme.of(context).textTheme.titleMedium),
         centerTitle: false,
       ),
       body: Padding(

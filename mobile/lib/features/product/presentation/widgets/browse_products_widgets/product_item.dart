@@ -1,8 +1,10 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mobile/core/utils/constants/colors.dart';
 import 'package:mobile/core/utils/constants/icon_assets.dart';
 import 'package:mobile/core/utils/responsive/responsive.dart';
+import 'package:mobile/features/cart/presentation/viewmodel/cart_cubit.dart';
 import 'package:mobile/features/product/domain/entities/product_entity.dart';
 
 class ProductItem extends StatelessWidget {
@@ -12,8 +14,7 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: Responsive.w(173),
-      height: Responsive.h(288.25),
+      width: double.infinity,
       decoration: BoxDecoration(
         color: AppColors.background,
         border: Border.all(width: 0, color: AppColors.background),
@@ -21,39 +22,50 @@ class ProductItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Stack(
-            children: [
-              Image.network(
-                product.imageUrl,
-                width: Responsive.w(173),
-                height: Responsive.h(216.25),
-                fit: BoxFit.fill,
-              ),
-              Positioned(
-                bottom: Responsive.h(8),
-                right: Responsive.w(8),
-                child: Container(
-                  width: Responsive.w(36),
-                  height: Responsive.h(36),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.background,
-                  ),
-                  child: SvgPicture.asset(
-                    IconAssets.plus,
-                    width: Responsive.w(10),
-                    height: Responsive.h(10),
-                    fit: BoxFit.none,
+          Expanded(
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Image.network(
+                  product.imageUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => const Center(
+                    child: Icon(Icons.image_not_supported_outlined),
                   ),
                 ),
-              ),
-            ],
+                Positioned(
+                  bottom: Responsive.h(8),
+                  right: Responsive.w(8),
+                  child: InkWell(
+                    onTap: () {
+                      context.read<CartCubit>().addProductToCart(product.id);
+                    },
+                    child: Container(
+                      width: Responsive.w(36),
+                      height: Responsive.h(36),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.background,
+                      ),
+                      child: SvgPicture.asset(
+                        IconAssets.plus,
+                        width: Responsive.w(10),
+                        height: Responsive.h(10),
+                        fit: BoxFit.none,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-          SizedBox(height: Responsive.h(16)),
+          SizedBox(height: Responsive.h(8)),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
             child: Text(
               product.name,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.bodyLarge!
                   .copyWith(color: AppColors.title),
             ),
@@ -62,7 +74,9 @@ class ProductItem extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
             child: Text(
-              "\$ ${product.price}",
+              "\$ ${product.price.toStringAsFixed(2)}",
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.titleLarge!
                   .copyWith(fontSize: Responsive.sp(18)),
             ),

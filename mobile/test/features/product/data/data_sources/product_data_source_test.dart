@@ -157,4 +157,34 @@ void main() {
       ).called(1);
     });
   });
+
+  test('requests related products with the requested limit', () async {
+    final path = ApiEndpoints.baseUrl + ApiEndpoints.getRelatedProducts(4);
+    final response = [
+      {
+        'id': 5,
+        'description': 'A related product',
+        'name': 'Electric Kettle',
+        'price': 65.0,
+        'stockQuantity': 4,
+        'imageUrl': 'https://example.com/kettle.jpg',
+      },
+    ];
+    when(() => apiClientMock.get(path, queryParams: {'limit': 2})).thenAnswer(
+      (_) async => Response(
+        requestOptions: RequestOptions(path: path),
+        data: response,
+      ),
+    );
+
+    final result = await productDataSource.getRelatedProducts(
+      productId: 4,
+      limit: 2,
+    );
+
+    expect(result, hasLength(1));
+    expect(result.single.id, 5);
+    expect(result.single.name, 'Electric Kettle');
+    verify(() => apiClientMock.get(path, queryParams: {'limit': 2})).called(1);
+  });
 }

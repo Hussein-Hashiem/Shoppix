@@ -1,10 +1,13 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/core/utils/responsive/responsive.dart';
 import 'package:mobile/features/cart/domain/entities/cart_entity.dart';
 import 'package:mobile/features/cart/presentation/widgets/cart_widgets/benefits.dart';
 import 'package:mobile/features/cart/presentation/widgets/cart_widgets/cart_item.dart';
 import 'package:mobile/features/cart/presentation/widgets/cart_widgets/shipping_banner.dart';
 import 'package:mobile/features/cart/presentation/widgets/cart_widgets/summary.dart';
+import 'package:mobile/features/order/presentation/viewmodel/create_order_cubit.dart';
+import 'package:mobile/features/order/presentation/viewmodel/create_order_state.dart';
 
 class CartContent extends StatelessWidget {
   const CartContent({super.key, required this.cart});
@@ -59,37 +62,43 @@ class CartContent extends StatelessWidget {
         SizedBox(height: Responsive.h(20)),
         Benefits(),
         SizedBox(height: Responsive.h(20)),
-        SizedBox(
-          height: Responsive.h(54),
-          child: ElevatedButton(
-            onPressed: () {
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
-              foregroundColor: Colors.white,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(Responsive.r(6)),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Spacer(),
-                Text(
-                  'PROCEED TO CHECKOUT',
-                  style: TextStyle(
-                    fontSize: Responsive.sp(14),
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: Responsive.w(1),
+        BlocBuilder<CreateOrderCubit, CreateOrderState>(
+          builder: (context, state) {
+            final isLoading = state is CreateOrderLoading;
+            return SizedBox(
+              height: Responsive.h(54),
+              child: ElevatedButton(
+                onPressed: isLoading
+                    ? null
+                    : () => context.read<CreateOrderCubit>().placeOrder(cart),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(Responsive.r(6)),
                   ),
                 ),
-                SizedBox(width: Responsive.w(8)),
-                const Icon(Icons.arrow_forward),
-                const Spacer(),
-              ],
-            ),
-          ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Spacer(),
+                    Text(
+                      isLoading ? 'PLACING ORDER...' : 'PROCEED TO CHECKOUT',
+                      style: TextStyle(
+                        fontSize: Responsive.sp(14),
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: Responsive.w(1),
+                      ),
+                    ),
+                    SizedBox(width: Responsive.w(8)),
+                    const Icon(Icons.arrow_forward),
+                    const Spacer(),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
         SizedBox(height: Responsive.h(12)),
         Center(

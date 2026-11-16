@@ -35,7 +35,7 @@ class LoginScreen extends StatelessWidget {
               ),
             );
             BlocProvider.of<GetAllProductsCubit>(context).getAllProducts();
-            context.pushReplacement(Routes.browseProducts);
+            context.go(Routes.home);
           } else if (state is FailLoginState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

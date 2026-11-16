@@ -5,4 +5,8 @@ import 'package:mobile/features/product/domain/entities/product_entity.dart';
 abstract class ProductRepo {
   Future<Either<Failure, ProductEntity>> getProductById({required int id});
   Future<Either<Failure, List<ProductEntity>>> getAllProducts({String? token});
+  Future<Either<Failure, List<ProductEntity>>> getRelatedProducts({
+    required int productId,
+    int limit = 2,
+  });
 }

@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile/features/cart/domain/entities/cart_entity.dart';
 import 'package:mobile/core/usecases/usecase.dart';
+import 'package:mobile/features/cart/domain/usecases/clear_cart_usecase.dart';
 import 'package:mobile/features/cart/domain/usecases/get_cart_usecase.dart';
 import 'package:mobile/features/cart/domain/usecases/add_product_to_cart_usecase.dart';
 import 'package:mobile/features/cart/domain/usecases/decrease_product_quantity_usecase.dart';
@@ -12,12 +14,14 @@ class CartCubit extends Cubit<CartState> {
   final AddProductToCartUsecase addProductToCartUsecase;
   final DecreaseProductQuantityUsecase decreaseProductQuantityUsecase;
   final DeleteProductFromCartUsecase deleteProductFromCartUsecase;
+  final ClearCartUsecase clearCartUsecase;
 
   CartCubit({
     required this.getCartUsecase,
     required this.addProductToCartUsecase,
     required this.decreaseProductQuantityUsecase,
     required this.deleteProductFromCartUsecase,
+    required this.clearCartUsecase,
   }) : super(const CartLoading());
 
   Future<void> getCartProducts() async {
@@ -31,9 +35,9 @@ class CartCubit extends Cubit<CartState> {
     );
   }
 
-  Future<void> addProductToCart(int productId) async {
+  Future<void> addProductToCart(int productId, {int quantity = 1}) async {
     final result = await addProductToCartUsecase(
-      AddProductParams(productId: productId),
+      AddProductParams(productId: productId, quantity: quantity),
     );
 
     await result.fold(
@@ -72,6 +76,20 @@ class CartCubit extends Cubit<CartState> {
       },
       (_) async {
         await getCartProducts();
+      },
+    );
+  }
+
+  Future<String?> clearCart() async {
+    final result = await clearCartUsecase(NoParams());
+    return result.fold(
+      (failure) {
+        emit(CartFail(message: failure.message));
+        return failure.message;
+      },
+      (_) {
+        emit(const CartSuccess(cart: CartEntity(items: [])));
+        return null;
       },
     );
   }
